@@ -73,3 +73,12 @@ to guarantee the UI can easiy connect to the backend later, gotta follow a Seriv
 - agree on data interface together before bulidng pages
 - review at least one teammate's pull request per feature
 - test responsiveness on mobile and desktop before merging
+
+
+# colors to use, this can change:
+    - #E32424
+    - #3A24E3
+    - #98B7B8
+    - #F2F6F7
+    - #000000
+
