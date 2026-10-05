@@ -81,4 +81,5 @@ to guarantee the UI can easiy connect to the backend later, gotta follow a Seriv
     - #98B7B8
     - #F2F6F7
     - #000000
+    - #EBF5F5
 
