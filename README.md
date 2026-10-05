@@ -50,7 +50,7 @@ to guarantee the UI can easiy connect to the backend later, gotta follow a Seriv
 
 
 # Roles assigned:
-- Gbola: Auth, Dashboard & Contract Lead:
+- Gbolahan: Auth, Dashboard & Contract Lead:
     - Login and Registration pages w/client-side validation
     - dashboard w/balance and recent transactions
     - CONTRACT LAYER: typescript interface (user, account, transaction) AND API_CONTRACT.md
