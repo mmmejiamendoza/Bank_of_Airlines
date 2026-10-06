@@ -5,14 +5,14 @@
 // it avoids conversions/bugs.
 
 export interface User {
-    id: string;
+    id: string;     //this will be auto-gen !!
     firstName: string;
     lastName: string;
     email: string;
 }
 
 export interface LoginRequest {
-    email: string;
+    identifier: string;     //this is so either email/userId can login
     password: string;
 }
 

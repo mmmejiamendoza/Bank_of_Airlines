@@ -1,0 +1,16 @@
+[
+    {
+        "id": "a1",
+        "userId": "RP1001",
+        "accountNumber": "1000000001",
+        "balance": 1000.0,
+        "currency": "USD"
+    },
+    {
+        "id": "a2",
+        "userId": "LH1002",
+        "accountNumber": "1000000002",
+        "balance": 500.0,
+        "currency": "USD"
+    }
+]

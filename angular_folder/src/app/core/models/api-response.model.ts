@@ -1,5 +1,13 @@
+export type ApiErrorCode =
+| 'VALIDATION_ERROR'
+| 'INVALID_CREDENTIALS'
+| 'EMAIL_ALREADY_TAKEN'
+| 'ACCOUNT_NOT_FOUND'
+| 'INSUFFICIENT FUNDS'
+| 'UNAUTHORIZED';
+
 export interface ApiError {
-    code: string;
+    code: ApiErrorCode;
     message: string;
 }
 
