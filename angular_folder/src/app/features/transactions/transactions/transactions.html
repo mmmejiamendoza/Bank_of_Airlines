@@ -1,1 +1,104 @@
-<p>transactions works!</p>
+<section class="tx-page">
+    <header class="tx-balance">
+        <p class="tx-balance__label">Current balance</p>
+        <p class="tx-balance__amount">{{ account()?.balance | currency: 'USD' }}</p>
+        <p class="tx-balance__number">Account {{ account()?.accountNumber}}</p>
+    </header>
+
+    <nav class="tx-tabs">
+        <button type="button" class="tx-tab" [class.tx-tab--active]="mode() === 'deposit'" (click)="setMode('deposit')">Deposit</button>
+        <button type="button" class="tx-tab" [class.tx-tab--active]="mode() === 'withdraw'" (click)="setMode('withdraw')">Withdraw</button>
+        <button type="button" class="tx-tab" [class.tx-tab--active]="mode() === 'transfer'" (click)="setMode('transfer')">Transfer</button>
+    </nav>
+
+    @if (feedback(); as fb) {
+        <div class="tx-feedback" [class.tx-feedback--success]="fb.type === 'success'" role="alert">
+            {{ fb.text}}
+        </div>
+    }
+
+    @if (mode() === 'deposit') {
+        <form class="tx-form" [formGroup]="depositForm" (ngSubmit)="onDeposit()">
+            <label class="tx-field">
+                <span>Amount</span>
+                    <input type="number" step="0.01" formControlName="amount" placeholder="0.00" />
+                    @if (depositForm.controls.amount.touched && depositForm.controls.amount.invalid) {
+                        <small class="tx-error">Enter an amount greater than 0 with up to 2 decimals.</small>
+                    }
+            </label>
+            <label class="tx-field">
+                <span>Note (optional)</span>
+                <input type="text" formControlName="description" />
+            </label>
+            <button type="submit" class="tx-submit" [disabled]="loading()">
+                {{ loading() ? 'Processing...' : 'Deposit'}}
+            </button>
+        </form>
+    }
+
+    @if (mode() === 'withdraw') {
+        <form class="tx-form" [formGroup]="withdrawForm" (ngSubmit)="onWithdraw()">
+            <label class="tx-field">
+                <span>Amount</span>
+                <input type="number" step="0.01" formControlName="amount" placeholder="0.00" />
+                @if (withdrawForm.controls.amount.touched && withdrawForm.controls.amount.invalid) {
+                    <small class="tx-error">Enter an amount greater than 0 with up 2 decimals.</small>
+                }
+            </label>
+            <label class="tx-field">
+                <span>Note (optional)</span>
+                <input type="text" formControlName="description" />
+            </label>
+            <button type="submit" class="tx-submit" [disabled]="loading()">
+                {{ loading()? 'Processing...' : 'Withdraw'}}
+            </button>
+        </form>
+    }
+
+    @if (mode() === 'transfer') {
+        <form class="tx-form" [formGroup]="transferForm" (ngSubmit)="onTransfer()">
+            <label class="tx-field">
+                <span>Recipient account number</span>
+                <input type="text" inputmode="numeric" formControlName="toAccountNumber" placeholder="10 digits" />
+                @if (transferForm.controls.toAccountNumber.touched && transferForm.controls.toAccountNumber.invalid) {
+                    <small class="tx-error">Enter a 10 digit account number</small>
+                }
+            </label>
+            <label class="tx-field">
+                <span>Amount</span>
+                <input type="number" step="0.01" formControlName="amount" placeholder="0.00" />
+                @if (transferForm.controls.amount.touched && transferForm.controls.amount.invalid) {
+                    <small class="tx-error">Enter an amount greater than 0 with up 2 decimals.</small>
+                }
+            </label>
+            <label class="tx-field">
+                <span>Note (optional)</span>
+                <input type="text" formControlName="description" />
+            </label>
+            <button type="submit" class="tx-submit" [disabled]="loading()">
+                {{ loading()? 'Processing...' : 'Transfer'}}
+            </button>
+        </form>
+    }
+
+    <section class="tx-history">
+        <h2>Recent Transactions</h2>
+        @for (t of transactions(); track t.id) {
+            <article class="tx-row">
+                <div class="tx-row__main">
+                    <strong>{{ t.type.replace('_', ' ') }}</strong>
+                    @if (t.relatedAccountNumber) { <span class="tx-row__meta">{{ t.relatedAccountNumber}}</span>}
+                    @if (t.description) { <span class="tx-row__meta">{{ t.description}}</span>}
+                </div>
+                <div class="tx-row__side">
+                    <span class="tx-row__amount" [class.tx-row__amount--credit]="isCredit(t)" [class.tx-row__amount--debit]="!isCredit(t)">
+                        {{ isCredit(t) ? '+' : '-'}}{{ t.amount | currency: 'USD'}}
+                    </span>
+                    <span class="tx-row__meta">{{ t.createdAt | date: 'MMM d, h:mm a'}}</span>
+                </div>
+            </article>
+        } @empty {
+            <p class="tx-empty">No transactions yet</p>
+        }
+    </section>
+</section>
