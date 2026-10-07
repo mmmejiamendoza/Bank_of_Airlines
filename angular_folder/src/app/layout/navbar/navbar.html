@@ -1,0 +1,19 @@
+<header class="navbar">
+  <button
+    class="navbar__menu"
+    type="button"
+    (click)="menuToggled.emit()"
+    [attr.aria-expanded]="menuOpen()"
+    aria-controls="app-sidebar"
+    aria-label="Toggle navigation"
+  >
+    ☰
+  </button>
+  <div class="navbar__brand">
+    <span class="navbar__mark" aria-hidden="true">AA</span>
+    <span class="navbar__title">{{ title() }}</span>
+  </div>
+  <div class="navbar__actions">
+    <span class="navbar__user">Signed in</span>
+  </div>
+</header>
