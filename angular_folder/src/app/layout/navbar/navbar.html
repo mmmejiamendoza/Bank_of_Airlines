@@ -4,7 +4,7 @@
     type="button"
     (click)="menuToggled.emit()"
     [attr.aria-expanded]="menuOpen()"
-    aria-controls="app-sidebar"
+    [aria-controls]="menuOpen() ? 'app-sidebar' : null"
     aria-label="Toggle navigation"
   >
     ☰
