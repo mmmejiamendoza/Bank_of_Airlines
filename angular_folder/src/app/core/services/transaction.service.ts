@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, delay, forkJoin, map, of } from 'rxjs';
+import { Observable, delay, forkJoin, map, shareReplay } from 'rxjs';
 import {
     Account,
     ApiErrorCode,
     ApiResponse,
     DepositRequest,
+    Recipient,
     Transaction,
     TransferRequest,
     WithdrawRequest,
@@ -18,7 +19,8 @@ export class TransactionService {
     private http = inject(HttpClient);
     private accounts: Account[] = [];
     private transactions: Transaction[] = [];
-    private loaded = false;
+    private recipients: Recipient[] = [];
+    private data$?: Observable<void>;
 
 
 // what components call (public api)
@@ -38,6 +40,15 @@ getTransactions(accountId: string): Observable<ApiResponse<Transaction[]>> {
                 .filter((t) => t.accountId === accountId)
                 .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
             return this.ok(list);
+        }),
+    );
+}
+
+getRecipients(accountId: string): Observable<ApiResponse<Recipient[]>> {
+    return this.load().pipe(
+        map(() => {
+            const own = this.accounts.find((a) => a.id === accountId);
+            return this.ok(this.recipients.filter((r) => r.accountNumber !== own?.accountNumber));
         }),
     );
 }
@@ -126,17 +137,21 @@ private checkAmount<T>(amount: number): ApiResponse<T> | null {
 }
 
 private load(): Observable<void> {
-    if(this.loaded) return of(undefined);
-    return forkJoin({
-        accounts: this.http.get<Account[]>('/mock/transactions.json'),
-        transactions: this.http.get<Transaction[]>('/mock/transactions.json'),
-    }).pipe(
-        map(({ accounts, transactions }) => {
-            this.accounts = accounts;
-            this.transactions = transactions;
-            this.loaded = true;
-        }),
-    );
+    if(!this.data$) {
+        this.data$ = forkJoin({
+            accounts: this.http.get<Account[]>('/mock/transactions.json'),
+            transactions: this.http.get<Transaction[]>('/mock/transactions.json'),
+            recipients: this.http.get<Recipient[]>('/mock/recipients.json')
+        }).pipe(
+            map(({ accounts, transactions, recipients }) => {
+                this.accounts = accounts;
+                this.transactions = transactions;
+                this.recipients = recipients;
+            }),
+            shareReplay(1),
+        );
+    }
+    return this.data$;
 }
 
 private round2(n: number): number {
