@@ -36,7 +36,13 @@ export const routes: Routes = [
       import('./features/transactions/transactions/transactions')
         .then((m) => m.Transactions),
   },
-
+{
+  path: 'help',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./features/help/help/help')
+      .then((m) => m.Help),
+},
   {
     path: '**',
     redirectTo: 'login'
