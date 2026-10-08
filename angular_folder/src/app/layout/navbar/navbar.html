@@ -4,16 +4,24 @@
     type="button"
     (click)="menuToggled.emit()"
     [attr.aria-expanded]="menuOpen()"
-    [aria-controls]="menuOpen() ? 'app-sidebar' : null"
-    aria-label="Toggle navigation"
+    aria-controls="app-sidebar"
+    aria-label="Open menu"
   >
-    ☰
+    <span></span><span></span><span></span>
   </button>
+
   <div class="navbar__brand">
     <span class="navbar__mark" aria-hidden="true">AA</span>
     <span class="navbar__title">{{ title() }}</span>
   </div>
-  <div class="navbar__actions">
-    <span class="navbar__user">Signed in</span>
-  </div>
+
+  @if (userName()) {
+    <div class="navbar__user">
+      <span class="navbar__avatar" aria-hidden="true">{{ initial() }}</span>
+      <span class="navbar__user-text">
+        <strong>{{ userName() }}</strong>
+        <small>{{ userId() }}</small>
+      </span>
+    </div>
+  }
 </header>
