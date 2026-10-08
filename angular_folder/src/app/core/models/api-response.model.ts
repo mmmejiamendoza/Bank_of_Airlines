@@ -3,7 +3,7 @@ export type ApiErrorCode =
 | 'INVALID_CREDENTIALS'
 | 'EMAIL_ALREADY_TAKEN'
 | 'ACCOUNT_NOT_FOUND'
-| 'INSUFFICIENT FUNDS'
+| 'INSUFFICIENT_FUNDS'
 | 'UNAUTHORIZED';
 
 export interface ApiError {

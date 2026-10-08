@@ -1,13 +1,14 @@
 // CONTRACT LAYER
 
-export type TransactionType = 'DEPOSIT' | 'WITHDRAW' | 'TRANSFER';
+export type TransactionType = 'DEPOSIT' | 'WITHDRAW' | 'TRANSFER_IN' | 'TRANSFER_OUT';
 
 export interface Transaction {
     id: string;
     accountId: string;
     type: TransactionType;
     amount: number;
-    description?: string // this will be for transfers
+    relatedAccountNumber?: string; // now THIS is only for transfer in/out
+    description?: string; // now optional cuz of relatedAccountNumber
     balanceAfter: number;
     createdAt: string; //(international standard format) YYYY-MM-DDTHH:mm:ssZ ex: 2026-09-29T14:30:00Z
 }

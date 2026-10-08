@@ -1,16 +1,7 @@
 [
-    {
-        "id": "a1",
-        "userId": "RP1001",
-        "accountNumber": "1000000001",
-        "balance": 1000.0,
-        "currency": "USD"
-    },
-    {
-        "id": "a2",
-        "userId": "LH1002",
-        "accountNumber": "1000000002",
-        "balance": 500.0,
-        "currency": "USD"
-    }
+    { "id": "t1", "accountId": "a1", "type": "DEPOSIT", "amount": 1300.0, "description": "paycheck", "balanceAfter": 1300.0, "createdAt": "2026-10-01T14:30:00Z" },
+    { "id": "t2", "accountId": "a1", "type": "WITHDRAW", "amount": 100.0, "balanceAfter": 1200.0, "createdAt": "2026-10-02T09:05:00Z" },
+    { "id": "t3", "accountId": "a2", "type": "DEPOSIT", "amount": 300.0, "balanceAfter": 300.0, "createdAt": "2026-10-02T10:00:00Z" },
+    { "id": "t4", "accountId": "a1", "type": "TRANSFER_OUT", "amount": 200.0, "relatedAccountNumber": "1000000002", "description": "rent share", "balanceAfter": 1000.0, "createdAt": "2026-10-03T16:45:00Z" },
+    { "id": "t5", "accountId": "a2", "type": "TRANSFER_IN", "amount": 200.0, "relatedAccountNumber": "1000000001", "description": "rent share", "balanceAfter": 500.0, "createdAt": "2026-10-03T16:45:00Z" }
 ]
