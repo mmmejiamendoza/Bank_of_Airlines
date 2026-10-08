@@ -1,1 +1,51 @@
-<p>login works!</p>
+<div class="login-page">
+  <div class="login-card">
+
+    <div class="login-header">
+      <h1>Welcome Back</h1>
+      <p>Sign in to your account</p>
+    </div>
+
+    <form (ngSubmit)="onLogin()">
+
+      <div class="form-group">
+        <label for="identifier">Email or User ID</label>
+
+        <input id="identifier" name="identifier" type="text" [(ngModel)]="identifier"
+          placeholder="Enter your email or user ID" autocomplete="username" />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+
+        <input id="password" name="password" type="password" [(ngModel)]="password" placeholder="Enter your password"
+          autocomplete="current-password" />
+      </div>
+
+      @if (errorMessage) {
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
+      }
+
+      <button type="submit" [disabled]="isLoading">
+        @if (isLoading) {
+        Signing in...
+        } @else {
+        Sign In
+        }
+      </button>
+
+    </form>
+
+    <div class="register-link">
+      <p>
+        Don't have an account?
+        <button type="button" class="link-button" (click)="goToRegister()">
+          Create one
+        </button>
+      </p>
+    </div>
+
+  </div>
+</div>

@@ -1,1 +1,168 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+
+  <div class="dashboard-header">
+    <div>
+      <p class="eyebrow">Dashboard</p>
+
+      @if (currentUser) {
+      <h1>Welcome back, {{ currentUser.firstName }}</h1>
+      } @else {
+      <h1>Welcome back</h1>
+      }
+
+      <p class="subtitle">
+        Here's an overview of your account.
+      </p>
+    </div>
+  </div>
+
+  @if (isLoading) {
+
+  <div class="loading-card">
+    <div class="spinner"></div>
+    <p>Loading your account...</p>
+  </div>
+
+  } @else {
+
+  @if (account) {
+
+  <section class="balance-card">
+
+    <div class="balance-header">
+      <div>
+        <p class="card-label">Current Balance</p>
+
+        <h2>
+          {{ account.balance | currency:'USD' }}
+        </h2>
+      </div>
+
+      <div class="account-badge">
+        {{ account.currency }}
+      </div>
+    </div>
+
+    <div class="account-details">
+
+      <div>
+        <span>Account Number</span>
+        <strong>{{ account.accountNumber }}</strong>
+      </div>
+
+      <div>
+        <span>Account ID</span>
+        <strong>{{ account.id }}</strong>
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="transactions-section">
+
+    <div class="section-header">
+
+      <div>
+        <p class="eyebrow">Activity</p>
+        <h2>Recent Transactions</h2>
+      </div>
+
+      <a routerLink="/transactions">
+        View all
+      </a>
+
+    </div>
+
+    @if (recentTransactions.length > 0) {
+
+    <div class="transactions-list">
+
+      @for (
+      transaction of recentTransactions;
+      track transaction.id
+      ) {
+
+      <div class="transaction-row">
+
+        <div class="transaction-info">
+
+          <div class="transaction-icon">
+
+            @if (transaction.type === 'DEPOSIT') {
+            +
+            } @else if (transaction.type === 'WITHDRAW') {
+            −
+            } @else {
+            ↗
+            }
+
+          </div>
+
+          <div>
+
+            <strong>
+              {{ transaction.type }}
+            </strong>
+
+            <p>
+              {{ transaction.description || 'Transaction' }}
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="transaction-amount">
+
+          <strong [class.deposit]="transaction.type === 'DEPOSIT'" [class.withdraw]="transaction.type === 'WITHDRAW'">
+
+            @if (transaction.type === 'DEPOSIT') {
+            +
+            } @else {
+            -
+            }
+
+            {{ transaction.amount | currency:'USD' }}
+
+          </strong>
+
+          <span>
+            {{ transaction.createdAt | date:'MMM d, y' }}
+          </span>
+
+        </div>
+
+      </div>
+
+      }
+
+    </div>
+
+    } @else {
+
+    <div class="empty-state">
+      <p>No recent transactions.</p>
+    </div>
+
+    }
+
+  </section>
+
+  } @else {
+
+  <div class="empty-state">
+
+    <h2>Account unavailable</h2>
+
+    <p>
+      We couldn't find an account associated with your profile.
+    </p>
+
+  </div>
+
+  }
+
+  }
+
+</div>

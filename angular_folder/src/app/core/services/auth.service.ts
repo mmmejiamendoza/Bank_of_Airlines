@@ -56,6 +56,11 @@ export class AuthService {
 
     this.currentUser = user;
 
+    // Save the logged-in user in the browser for route protection.
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('currentUser', JSON.stringify(user));
+    }
+
     return {
       success: true,
       data: {
@@ -107,11 +112,28 @@ export class AuthService {
   }
 
   getCurrentUser(): User | null {
+
+    if (this.currentUser) {
+      return this.currentUser;
+    }
+
+    if (typeof window !== 'undefined') {
+      const storedUser = localStorage.getItem('currentUser');
+
+      if (storedUser) {
+        this.currentUser = JSON.parse(storedUser);
+      }
+    }
+
     return this.currentUser;
   }
 
   logout(): void {
     this.currentUser = null;
+
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('currentUser');
+    }
   }
 
   private findUserById(userId: string): User | undefined {
