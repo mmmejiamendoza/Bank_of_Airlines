@@ -164,7 +164,7 @@ export class Transactions implements OnInit {
   private refresh() {
     this.service.getAccount(this.accountId).subscribe((res) => this.account.set(res.data ?? null));
     this.service.getTransactions(this.accountId).subscribe((res) => this.transactions.set(res.data ?? []));
-    this.service.getRecipient(this.accountId).subscribe((res) => this.recipients.set(res.data ?? []));
+    this.service.getRecipients(this.accountId).subscribe((res) => this.recipients.set(res.data ?? []));
   }
 
   private dayKey(d: Date): string {
