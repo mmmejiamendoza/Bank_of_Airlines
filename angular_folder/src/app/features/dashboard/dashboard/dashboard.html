@@ -389,7 +389,7 @@
           <div class="transaction-row">
 
             <div class="merchant-icon" [class.deposit]="transaction.type === 'DEPOSIT'"
-              [class.withdraw]="transaction.type === 'WITHDRAW'" [class.transfer]="transaction.type === 'TRANSFER'">
+              [class.withdraw]="transaction.type === 'WITHDRAW'" [class.transfer]="transaction.type === 'TRANSFER_IN' || transaction.type === 'TRANSFER_OUT'">
 
               {{ getTransactionIcon(transaction) }}
 
@@ -410,7 +410,7 @@
 
 
             <div class="transaction-amount" [class.deposit]="transaction.type === 'DEPOSIT'"
-              [class.withdraw]="transaction.type === 'WITHDRAW'" [class.transfer]="transaction.type === 'TRANSFER'">
+              [class.withdraw]="transaction.type === 'WITHDRAW'" [class.transfer]="transaction.type === 'TRANSFER_IN' || transaction.type === 'TRANSFER_OUT'">
 
               {{ getTransactionAmount(transaction) }}
 
@@ -651,7 +651,7 @@
           <div class="transaction-row">
 
             <div class="merchant-icon" [class.deposit]="transaction.type === 'DEPOSIT'"
-              [class.withdraw]="transaction.type === 'WITHDRAW'" [class.transfer]="transaction.type === 'TRANSFER'">
+              [class.withdraw]="transaction.type === 'WITHDRAW'" [class.transfer]="transaction.type === 'TRANSFER_IN' || transaction.type === 'TRANSFER_OUT'">
 
               {{ getTransactionIcon(transaction) }}
 
@@ -672,7 +672,7 @@
 
 
             <div class="transaction-amount" [class.deposit]="transaction.type === 'DEPOSIT'"
-              [class.withdraw]="transaction.type === 'WITHDRAW'" [class.transfer]="transaction.type === 'TRANSFER'">
+              [class.withdraw]="transaction.type === 'WITHDRAW'" [class.transfer]="transaction.type === 'TRANSFER_IN' || transaction.type === 'TRANSFER_OUT'">
 
               {{ getTransactionAmount(transaction) }}
 

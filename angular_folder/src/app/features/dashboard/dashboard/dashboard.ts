@@ -415,22 +415,15 @@ export class Dashboard implements OnInit {
     transaction: Transaction
   ): string {
 
-    if (transaction.type === 'DEPOSIT') {
-
+    if (transaction.type === 'DEPOSIT' || transaction.type === 'TRANSFER_IN') {
       return `+$${transaction.amount.toFixed(2)}`;
-
     }
 
-
-    if (transaction.type === 'WITHDRAW') {
-
+    if (transaction.type === 'WITHDRAW' || transaction.type === 'TRANSFER_OUT') {
       return `-$${transaction.amount.toFixed(2)}`;
-
     }
-
 
     return `$${transaction.amount.toFixed(2)}`;
-
   }
 
 
