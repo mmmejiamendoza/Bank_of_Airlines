@@ -1,13 +1,13 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { User } from '../models';
 
-// TEMPORARY stand-in until login is merged. Once the login feature calls setUser(),
-// change this default to null and delete TEMP_USER.
-const TEMP_USER: User = { id: 'RP1001', firstName: 'Rose', lastName: 'Perez', email: 'rosep@gmail.com' };
+const USER_KEY = 'bank-of-airlines-current-user-v1';
 
 @Injectable({ providedIn: 'root' })
 export class CurrentUserService {
-  private readonly current = signal<User | null>(TEMP_USER);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+  private readonly current = signal<User | null>(this.restore());
 
   readonly user = this.current.asReadonly();
 
@@ -18,5 +18,22 @@ export class CurrentUserService {
 
   setUser(user: User | null): void {
     this.current.set(user);
+    if (!this.isBrowser) return;
+    try {
+      if (user) sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+      else sessionStorage.removeItem(USER_KEY);
+    } catch {
+      /* storage unavailable: keep going in memory */
+    }
+  }
+
+  private restore(): User | null {
+    if (!this.isBrowser) return null; // the server has no sessionStorage
+    try {
+      const raw = sessionStorage.getItem(USER_KEY);
+      return raw ? (JSON.parse(raw) as User) : null;
+    } catch {
+      return null;
+    }
   }
 }

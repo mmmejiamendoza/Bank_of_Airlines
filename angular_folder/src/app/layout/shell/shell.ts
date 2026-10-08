@@ -14,10 +14,6 @@ import { CurrentUserService } from '../../core/services/current.user.services';
 export class Shell {
   private currentUser = inject(CurrentUserService);
   private router = inject(Router);
-
-  constructor() {
-    console.log('current user:', this.currentUser.user());
-  }
   
   readonly sidebarOpen = signal(false);
 
