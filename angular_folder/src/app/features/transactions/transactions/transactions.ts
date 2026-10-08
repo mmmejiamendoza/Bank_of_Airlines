@@ -18,7 +18,7 @@ export class Transactions implements OnInit {
   private fb = inject(FormBuilder);
   private service = inject(TransactionService);
 
-  readonly accountId = 'a1';
+  accountId = 'a1';
 
   mode = signal<Mode>('deposit');
   loading = signal(false);
