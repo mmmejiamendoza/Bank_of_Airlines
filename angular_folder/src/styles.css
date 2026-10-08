@@ -1,1 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+  --blue: #4a7fbf;        /* main steel blue */
+  --blue-mid: #5b8fc9;    /* form panel */
+  --blue-deep: #35598a;   /* buttons, active tab, quick transfer */
+  --blue-light: #a2c2db;  /* table title bar, pager */
+  --blue-head: #88aecb;   /* table header row */
+  --blue-tint: #eaf2f9;   /* income rows */
+  --red: #c62828;
+  --red-tint: #f9ecec;    /* expense rows */
+  --paper: #f2f6f7;
+  --mint: #ebf5f5;
+  --black: #000000;
+  --white: #ffffff;
+  --muted: rgba(0, 0, 0, 0.62);
+  --radius: 16px;
+  --font: 'Segoe UI', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font);
+  background: linear-gradient(180deg, var(--blue) 0%, var(--paper) 50%, #c13333 100%) fixed;
+}

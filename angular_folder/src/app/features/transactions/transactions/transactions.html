@@ -18,30 +18,13 @@
     </article>
   </section>
 
-  <!-- Quick transfer -->
-  <section class="tx-panel tx-panel--dark tx-quick">
-    <h2>Quick transfer</h2>
-    <ul class="tx-quick__list">
-      @for (r of recipients(); track r.id) {
-        <li>
-          <button
-            type="button"
-            class="tx-person"
-            [class.tx-person--selected]="selectedAccountNumber() === r.accountNumber"
-            (click)="pickRecipient(r)"
-          >
-            <span class="tx-person__avatar">{{ initials(r) }}</span>
-            <span class="tx-person__name">{{ r.firstName }} {{ r.lastName[0] }}.</span>
-          </button>
-        </li>
-      } @empty {
-        <li class="tx-empty">No saved recipients yet.</li>
-      }
-    </ul>
+  <!-- Welcome -->
+  <section class="tx-welcome">
+    <p>Welcome back<br />{{ userName() }},</p>
   </section>
 
   <!-- Tabs + forms -->
-  <section class="tx-panel tx-actions">
+  <section class="tx-actions">
     <nav class="tx-tabs">
       <button type="button" class="tx-tab" [class.tx-tab--active]="mode() === 'deposit'" (click)="setMode('deposit')">Deposit</button>
       <button type="button" class="tx-tab" [class.tx-tab--active]="mode() === 'withdraw'" (click)="setMode('withdraw')">Withdraw</button>
@@ -64,12 +47,10 @@
           }
         </label>
         <label class="tx-field">
-          <span>Note (optional)</span>
-          <input type="text" formControlName="description" />
+          <span>Message (optional)</span>
+          <textarea rows="3" formControlName="description"></textarea>
         </label>
-        <button type="submit" class="tx-submit" [disabled]="loading()">
-          {{ loading() ? 'Processing...' : 'Deposit' }}
-        </button>
+        <button type="submit" class="tx-submit" [disabled]="loading()">{{ loading() ? 'Processing...' : 'Deposit' }}</button>
       </form>
     }
 
@@ -83,12 +64,10 @@
           }
         </label>
         <label class="tx-field">
-          <span>Note (optional)</span>
-          <input type="text" formControlName="description" />
+          <span>Message (optional)</span>
+          <textarea rows="3" formControlName="description"></textarea>
         </label>
-        <button type="submit" class="tx-submit" [disabled]="loading()">
-          {{ loading() ? 'Processing...' : 'Withdraw' }}
-        </button>
+        <button type="submit" class="tx-submit" [disabled]="loading()">{{ loading() ? 'Processing...' : 'Withdraw' }}</button>
       </form>
     }
 
@@ -96,7 +75,7 @@
       <form class="tx-form" [formGroup]="transferForm" (ngSubmit)="onTransfer()">
         <label class="tx-field">
           <span>Recipient account number</span>
-          <input type="text" inputmode="numeric" formControlName="toAccountNumber" placeholder="10 digits" />
+          <input type="text" inputmode="numeric" maxlength="10" formControlName="toAccountNumber" placeholder="10 digits" />
           @if (transferForm.controls.toAccountNumber.touched && transferForm.controls.toAccountNumber.invalid) {
             <small class="tx-error">Enter a 10-digit account number.</small>
           }
@@ -109,58 +88,70 @@
           }
         </label>
         <label class="tx-field">
-          <span>Note (optional)</span>
-          <input type="text" formControlName="description" />
+          <span>Message (optional)</span>
+          <textarea rows="3" formControlName="description"></textarea>
         </label>
-        <button type="submit" class="tx-submit" [disabled]="loading()">
-          {{ loading() ? 'Processing...' : 'Transfer' }}
-        </button>
+        <button type="submit" class="tx-submit" [disabled]="loading()">{{ loading() ? 'Processing...' : 'Transfer' }}</button>
       </form>
     }
   </section>
 
-  <!-- Chart -->
-  <section class="tx-panel tx-chart-panel">
-    <header class="tx-panel__head">
-      <h2>Activity</h2>
-      <p class="tx-legend">
-        <span class="tx-legend__dot tx-legend__dot--income"></span>Income
-        <span class="tx-legend__dot tx-legend__dot--expenses"></span>Expenses
-      </p>
-    </header>
-    <svg class="tx-chart" viewBox="0 0 350 165" role="img" aria-label="Income and expenses for the last 7 days">
-      <line class="tx-chart__axis" x1="0" y1="140" x2="350" y2="140" />
-      @for (d of chart(); track $index) {
-        <rect class="tx-chart__bar tx-chart__bar--income" [attr.x]="d.incomeX" [attr.y]="d.incomeY" width="14" [attr.height]="d.incomeH" rx="3">
-          <title>{{ d.label }} income {{ d.income | currency: 'USD' }}</title>
-        </rect>
-        <rect class="tx-chart__bar tx-chart__bar--expenses" [attr.x]="d.expenseX" [attr.y]="d.expenseY" width="14" [attr.height]="d.expenseH" rx="3">
-          <title>{{ d.label }} expenses {{ d.expenses | currency: 'USD' }}</title>
-        </rect>
-        <text class="tx-chart__label" [attr.x]="d.labelX" y="158" text-anchor="middle">{{ d.label }}</text>
+  <!-- Quick transfer -->
+  <section class="tx-quick">
+    <h2>Quick transfer</h2>
+    <ul class="tx-quick__list">
+      @for (r of recipients(); track r.id) {
+        <li>
+          <button type="button" class="tx-person"
+            [class.tx-person--selected]="selectedAccountNumber() === r.accountNumber"
+            (click)="pickRecipient(r)">
+            <span class="tx-person__avatar">{{ initials(r) }}</span>
+            <span class="tx-person__name">{{ r.firstName }} {{ r.lastName[0] }}.</span>
+          </button>
+        </li>
+      } @empty {
+        <li class="tx-empty">No saved recipients yet.</li>
       }
-    </svg>
+    </ul>
   </section>
 
-  <!-- History -->
-  <section class="tx-panel tx-history">
-    <h2>Recent transactions</h2>
-    @for (t of transactions(); track t.id) {
-      <article class="tx-row">
-        <div class="tx-row__main">
-          <strong>{{ t.type.replace('_', ' ') }}</strong>
-          @if (t.relatedAccountNumber) { <span class="tx-row__meta">{{ t.relatedAccountNumber }}</span> }
-          @if (t.description) { <span class="tx-row__meta">{{ t.description }}</span> }
-        </div>
-        <div class="tx-row__side">
-          <span class="tx-row__amount" [class.tx-row__amount--credit]="isCredit(t)" [class.tx-row__amount--debit]="!isCredit(t)">
-            {{ isCredit(t) ? '+' : '-' }}{{ t.amount | currency: 'USD' }}
-          </span>
-          <span class="tx-row__meta">{{ t.createdAt | date: 'MMM d, h:mm a' }}</span>
-        </div>
-      </article>
-    } @empty {
-      <p class="tx-empty">No transactions yet.</p>
+  <!-- All transactions -->
+  <section class="tx-tablecard">
+    <h2>All transactions</h2>
+
+    @if (tableLoading()) {
+      @for (i of [1, 2, 3, 4, 5]; track i) { <div class="tx-skeleton"></div> }
+    } @else if (transactions().length === 0) {
+      <p class="tx-empty tx-empty--pad">No transactions yet.</p>
+    } @else {
+      <table class="tx-table">
+        <thead>
+          <tr>
+            <th>Transaction</th>
+            <th>Date</th>
+            <th class="tx-col-type">Type</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (t of pagedTransactions(); track t.id) {
+            <tr [class.tx-tr--credit]="isCredit(t)" [class.tx-tr--debit]="!isCredit(t)">
+              <td>{{ rowTitle(t) }}</td>
+              <td>{{ t.createdAt | date: 'MM-dd-yyyy hh:mm a' }}</td>
+              <td class="tx-col-type">{{ typeLabel(t) }}</td>
+              <td>{{ isCredit(t) ? '+' : '-' }}{{ t.amount | currency: 'USD' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <nav class="tx-pager" aria-label="Pagination">
+        <button type="button" (click)="goTo(currentPage() - 1)" [disabled]="currentPage() === 1">← Previous</button>
+        @for (p of pages(); track p) {
+          <button type="button" [class.tx-pager__active]="p === currentPage()" (click)="goTo(p)">{{ p }}</button>
+        }
+        <button type="button" (click)="goTo(currentPage() + 1)" [disabled]="currentPage() === totalPages()">Next →</button>
+      </nav>
     }
   </section>
 </div>

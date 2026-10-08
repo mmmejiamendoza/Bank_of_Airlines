@@ -86,6 +86,36 @@ export class Transactions implements OnInit {
     });
   });
 
+    readonly pageSize = 10;
+  page = signal(1);
+  tableLoading = signal(true);
+  userName = signal('Rose Perez'); // TODO: take from CurrentUserService once Gbolahan's is merged
+
+  totalPages = computed(() => Math.max(1, Math.ceil(this.transactions().length / this.pageSize)));
+  currentPage = computed(() => Math.min(this.page(), this.totalPages()));
+  pages = computed(() => Array.from({ length: this.totalPages() }, (_, i) => i + 1));
+  pagedTransactions = computed(() => {
+    const start = (this.currentPage() - 1) * this.pageSize;
+    return this.transactions().slice(start, start + this.pageSize);
+  });
+
+  goTo(p: number) {
+    this.page.set(Math.min(Math.max(1, p), this.totalPages()));
+  }
+
+  typeLabel(t: Transaction): string {
+    if (t.type === 'DEPOSIT') return 'deposit';
+    if (t.type === 'WITHDRAW') return 'withdraw';
+    return 'transfer';
+  }
+
+  rowTitle(t: Transaction): string {
+    if (t.description) return t.description;
+    if (t.type === 'TRANSFER_OUT') return `To ${t.relatedAccountNumber}`;
+    if (t.type === 'TRANSFER_IN') return `From ${t.relatedAccountNumber}`;
+    return t.type === 'DEPOSIT' ? 'Deposit' : 'Withdraw';
+  }
+
   ngOnInit() {
     this.refresh();
   }
@@ -166,6 +196,9 @@ export class Transactions implements OnInit {
     this.service.getAccount(this.accountId).subscribe((res) => this.account.set(res.data ?? null));
     this.service.getTransactions(this.accountId).subscribe((res) => this.transactions.set(res.data ?? []));
     this.service.getRecipients(this.accountId).subscribe((res) => this.recipients.set(res.data ?? []));
+    this.service.getTransactions(this.accountId).subscribe((res) => { this.transactions.set(res.data ?? []); 
+    this.tableLoading.set(false);
+});
   }
 
   private dayKey(d: Date): string {
