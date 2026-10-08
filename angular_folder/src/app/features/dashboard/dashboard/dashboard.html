@@ -4,12 +4,9 @@
        TOP NAVIGATION
        ========================================= -->
 
-<header class="dashboard-header">
+  <header class="dashboard-header">
 
-  <!-- LEFT SIDE -->
-  <div class="header-left">
-
-    <button class="menu-button" type="button" aria-label="Open menu">
+    <button type="button" class="menu-button" aria-label="Open menu">
       ☰
     </button>
 
@@ -21,73 +18,96 @@
         <span class="mini-red"></span>
       </div>
 
-      <div class="brand-text">
+      <span>BANK OF AIRLINES</span>
 
-        <strong>
-          BANK OF AIRLINES
-        </strong>
+    </div>
 
-        <span>
-          ONLINE BANKING
+    <nav class="main-navigation">
+
+      <a routerLink="/dashboard">
+        Dashboard
+      </a>
+
+      <a routerLink="/transactions">
+        Transactions
+      </a>
+
+    </nav>
+
+    @if (currentUser) {
+
+    <div class="profile-wrapper">
+
+      <button type="button" class="profile-area" (click)="toggleProfileMenu()" [attr.aria-expanded]="profileMenuOpen">
+
+        <div class="profile-avatar">
+          {{ currentUser.firstName.charAt(0) }}
+        </div>
+
+        <div class="profile-info">
+
+          <strong>
+            {{ currentUser.firstName }}
+            {{ currentUser.lastName }}
+          </strong>
+
+          <span>
+            {{ currentUser.id }}
+          </span>
+
+        </div>
+
+        <span class="profile-arrow">
+          {{ profileMenuOpen ? '▲' : '▼' }}
         </span>
+
+      </button>
+
+      @if (profileMenuOpen) {
+
+      <div class="profile-dropdown">
+
+        <div class="profile-dropdown-header">
+
+          <strong>
+            {{ currentUser.firstName }}
+            {{ currentUser.lastName }}
+          </strong>
+
+          <span>
+            {{ currentUser.email }}
+          </span>
+
+          <small>
+            {{ currentUser.id }}
+          </small>
+
+        </div>
+
+        <div class="profile-dropdown-divider"></div>
+
+        <button type="button" class="profile-dropdown-item logout-button" (click)="logout()">
+
+          <span>↪</span>
+
+          Logout
+
+        </button>
 
       </div>
 
-    </div>
-
-  </div>
-
-
-  <!-- CENTER NAVIGATION -->
-  <nav class="main-navigation">
-
-    <a routerLink="/dashboard" class="nav-link active">
-      Accounts
-    </a>
-
-    <a routerLink="/transactions" class="nav-link">
-      Transactions
-    </a>
-
-    <a routerLink="/transactions" class="nav-link">
-      Transfer
-    </a>
-
-  </nav>
-
-
-  <!-- RIGHT SIDE -->
-  @if (currentUser) {
-
-  <div class="profile-area">
-
-    <div class="profile-avatar">
-      {{ currentUser.firstName.charAt(0) }}
-    </div>
-
-    <div class="profile-info">
-
-      <strong>
-        {{ currentUser.firstName }}
-        {{ currentUser.lastName }}
-      </strong>
-
-      <span>
-        {{ currentUser.id }}
-      </span>
+      }
 
     </div>
 
-    <span class="profile-arrow">
-      ▼
-    </span>
+    }
 
-  </div>
+  </header>
 
-  }
 
-</header>
-
+  <!-- =========================================
+       LOADING
+       ========================================= -->
 
   @if (isLoading) {
 
@@ -95,47 +115,41 @@
 
     <div class="spinner"></div>
 
-    <p>
-      Loading your accounts...
-    </p>
+    <p>Loading your accounts...</p>
 
   </div>
 
   } @else {
 
-  <main class="dashboard-content">
-
-
-    <!-- =========================================
-         WELCOME / SEARCH
+  <!-- =========================================
+         MAIN CONTENT
          ========================================= -->
 
-    <section class="welcome-section">
+  <main class="dashboard-content">
 
-      <div class="welcome-date">
+    <!-- =========================================
+           WELCOME / SEARCH
+           ========================================= -->
 
-        @if (currentUser) {
+    <section class="welcome-row">
 
-        <span>
-          WELCOME,
-          {{ currentUser.firstName | uppercase }}
-          <span class="welcome-divider">|</span>
-          {{ today | date:'MMM d, y' | uppercase }}
-        </span>
+      @if (currentUser) {
 
-        }
+      <p class="welcome-date">
+        Welcome back,
+        {{ currentUser.firstName }}
+      </p>
 
-      </div>
-
+      }
 
       <div class="help-search">
 
         <span class="search-icon">
-          ⌕
+          ?
         </span>
 
         <span class="search-placeholder">
-          How can we help?
+          How can we help you?
         </span>
 
         <span class="search-close">
@@ -148,171 +162,217 @@
 
 
     <!-- =========================================
-         CHECKING ACCOUNT
-         ========================================= -->
+           CHECKING ACCOUNT
+           ========================================= -->
 
     @if (checkingAccount) {
 
     <section class="account-card checking-card">
 
+      <!-- Account Header -->
+
       <div class="account-card-header">
 
-        <span class="account-section-title">
-          Bank Accounts
-          <span class="account-count">(1)</span>
+        <span>
+          Checking Account
         </span>
 
-        <span class="header-help">
-          Account overview
+        <span>
+          ••••
+          {{ checkingAccount.accountNumber.slice(-4) }}
         </span>
 
       </div>
 
+
+      <!-- Balance -->
 
       <div class="balance-area">
 
         <div class="account-title">
-          TOTAL CHECKING
-          <span>
-            (...{{ checkingAccount.accountNumber.slice(-4) }})
-          </span>
+          Checking
         </div>
 
-        <div class="balance-block">
+        <div class="balance-value">
 
-          <div class="balance-value">
-            {{ checkingAccount.balance | currency:'USD' }}
-          </div>
+          {{ checkingAccount.balance | currency }}
 
-          <div class="balance-label">
-            available balance
-          </div>
+        </div>
 
+        <div class="balance-label">
+          Available Balance
         </div>
 
       </div>
 
 
-      <!-- Account details -->
+      <!-- Account Details -->
 
-      <div class="details-header">
+      <button type="button" class="details-header" (click)="toggleAccountDetails()"
+        [attr.aria-expanded]="accountDetailsOpen">
 
         <span>
           Account Details
         </span>
 
         <span class="details-arrow">
-          ⌄
+          {{ accountDetailsOpen ? '⌃' : '⌄' }}
         </span>
 
-      </div>
+      </button>
 
+
+      @if (accountDetailsOpen) {
 
       <div class="account-details">
 
         <div>
-          <span>Available balance:</span>
 
-          <strong>
-            {{ checkingAccount.balance | currency:'USD' }}
-          </strong>
-        </div>
-
-        <div>
-          <span>Remaining balance:</span>
-
-          <strong>
-            {{ checkingAccount.balance | currency:'USD' }}
-          </strong>
-        </div>
-
-        <div>
-          <span>Interest Rate:</span>
-
-          <strong>
-            0.00%
-          </strong>
-        </div>
-
-        <div>
-          <span>Account number:</span>
+          <span>
+            Account Number
+          </span>
 
           <strong>
             {{ checkingAccount.accountNumber }}
           </strong>
+
         </div>
 
         <div>
-          <span>Routing number:</span>
+
+          <span>
+            Account Type
+          </span>
 
           <strong>
-            01001001
+            Checking
           </strong>
+
+        </div>
+
+        <div>
+
+          <span>
+            Currency
+          </span>
+
+          <strong>
+            {{ checkingAccount.currency }}
+          </strong>
+
+        </div>
+
+        <div>
+
+          <span>
+            Account ID
+          </span>
+
+          <strong>
+            {{ checkingAccount.id }}
+          </strong>
+
         </div>
 
       </div>
 
+      }
 
-      <!-- Actions -->
+
+      <!-- Account Actions -->
 
       <div class="account-actions">
 
-        <a routerLink="/transactions" class="action-button primary-action" aria-label="Make a transaction">
+        <a routerLink="/transactions" class="action-button primary-action">
           +
         </a>
 
         <a routerLink="/transactions" class="action-button">
-          Deposit checks
-        </a>
-
-        <a routerLink="/transactions" class="action-button">
-          Transfer
+          Deposit
         </a>
 
         <a routerLink="/transactions" class="action-button">
           Withdraw
         </a>
 
+        <a routerLink="/transactions" class="action-button">
+          Transfer
+        </a>
+
       </div>
 
 
-      <!-- Transactions -->
+      <!-- =========================================
+               CHECKING TRANSACTIONS
+               ========================================= -->
 
       <div class="transactions-card">
 
         <div class="transactions-heading">
 
           <div class="transactions-title">
-
-            <strong>
-              Recent Transactions
-            </strong>
-
-            <span>
-              (...{{ checkingAccount.accountNumber.slice(-4) }})
-            </span>
-
+            Recent Transactions
           </div>
 
-          <a routerLink="/transactions">
-            View all transactions
-          </a>
+          <button type="button" class="view-transactions-button" (click)="toggleTransactions()">
+
+            {{
+            showAllTransactions
+            ? 'Hide transactions'
+            : 'View all transactions'
+            }}
+
+          </button>
 
         </div>
 
 
+        <!-- Sort -->
+
         <div class="transaction-meta">
 
           <span>
-            Date:
-            {{ today | date:'MMM d, y' }}
+            Sort By:
           </span>
 
-          <span>
-            Sort By:
-            <strong>Recent</strong>
-            ⌄
-          </span>
+          <div class="sort-wrapper">
+
+            <button type="button" class="sort-button" (click)="toggleSortMenu()" [attr.aria-expanded]="sortMenuOpen">
+
+              {{ transactionSort }}
+
+              <span>
+                {{ sortMenuOpen ? '⌃' : '⌄' }}
+              </span>
+
+            </button>
+
+
+            @if (sortMenuOpen) {
+
+            <div class="sort-dropdown">
+
+              <button type="button" (click)="setTransactionSort('Recent')">
+                Recent
+              </button>
+
+              <button type="button" (click)="setTransactionSort('Oldest')">
+                Oldest
+              </button>
+
+              <button type="button" (click)="setTransactionSort('Highest Amount')">
+                Highest Amount
+              </button>
+
+              <button type="button" (click)="setTransactionSort('Lowest Amount')">
+                Lowest Amount
+              </button>
+
+            </div>
+
+            }
+
+          </div>
 
         </div>
 
@@ -322,13 +382,14 @@
         <div class="transaction-list">
 
           @for (
-          transaction of checkingTransactions;
+          transaction of getDisplayedTransactions(checkingTransactions);
           track transaction.id
           ) {
 
           <div class="transaction-row">
 
-            <div class="merchant-icon" [class]="getTransactionClass(transaction)">
+            <div class="merchant-icon" [class.deposit]="transaction.type === 'DEPOSIT'"
+              [class.withdraw]="transaction.type === 'WITHDRAW'" [class.transfer]="transaction.type === 'TRANSFER'">
 
               {{ getTransactionIcon(transaction) }}
 
@@ -342,13 +403,14 @@
               </strong>
 
               <span>
-                {{ transaction.createdAt | date:'MMM d, y' }}
+                {{ transaction.createdAt | date:'MMM d, y, h:mm a' }}
               </span>
 
             </div>
 
 
-            <div class="transaction-amount" [class]="getTransactionClass(transaction)">
+            <div class="transaction-amount" [class.deposit]="transaction.type === 'DEPOSIT'"
+              [class.withdraw]="transaction.type === 'WITHDRAW'" [class.transfer]="transaction.type === 'TRANSFER'">
 
               {{ getTransactionAmount(transaction) }}
 
@@ -363,7 +425,7 @@
         } @else {
 
         <div class="empty-transactions">
-          No recent transactions.
+          No transactions available.
         </div>
 
         }
@@ -376,8 +438,8 @@
 
 
     <!-- =========================================
-         SAVINGS ACCOUNT
-         ========================================= -->
+           SAVINGS ACCOUNT
+           ========================================= -->
 
     @if (savingsAccount) {
 
@@ -385,13 +447,13 @@
 
       <div class="account-card-header">
 
-        <span class="account-section-title">
-          Bank Accounts
-          <span class="account-count">(1)</span>
+        <span>
+          Savings Account
         </span>
 
-        <span class="header-help">
-          Savings overview
+        <span>
+          ••••
+          {{ savingsAccount.accountNumber.slice(-4) }}
         </span>
 
       </div>
@@ -400,83 +462,91 @@
       <div class="balance-area">
 
         <div class="account-title">
-          TOTAL SAVINGS
-          <span>
-            (...{{ savingsAccount.accountNumber.slice(-4) }})
-          </span>
+          Savings
         </div>
 
-        <div class="balance-block">
+        <div class="balance-value">
 
-          <div class="balance-value">
-            {{ savingsAccount.balance | currency:'USD' }}
-          </div>
+          {{ savingsAccount.balance | currency }}
 
-          <div class="balance-label">
-            available balance
-          </div>
+        </div>
 
+        <div class="balance-label">
+          Available Balance
         </div>
 
       </div>
 
 
-      <div class="details-header">
+      <button type="button" class="details-header" (click)="toggleAccountDetails()"
+        [attr.aria-expanded]="accountDetailsOpen">
 
         <span>
           Account Details
         </span>
 
         <span class="details-arrow">
-          ⌄
+          {{ accountDetailsOpen ? '⌃' : '⌄' }}
         </span>
 
-      </div>
+      </button>
 
+
+      @if (accountDetailsOpen) {
 
       <div class="account-details">
 
         <div>
-          <span>Available balance:</span>
 
-          <strong>
-            {{ savingsAccount.balance | currency:'USD' }}
-          </strong>
-        </div>
-
-        <div>
-          <span>Remaining balance:</span>
-
-          <strong>
-            {{ savingsAccount.balance | currency:'USD' }}
-          </strong>
-        </div>
-
-        <div>
-          <span>Interest Rate:</span>
-
-          <strong>
-            3.41%
-          </strong>
-        </div>
-
-        <div>
-          <span>Account number:</span>
+          <span>
+            Account Number
+          </span>
 
           <strong>
             {{ savingsAccount.accountNumber }}
           </strong>
+
         </div>
 
         <div>
-          <span>Routing number:</span>
+
+          <span>
+            Account Type
+          </span>
 
           <strong>
-            01001002
+            Savings
           </strong>
+
+        </div>
+
+        <div>
+
+          <span>
+            Currency
+          </span>
+
+          <strong>
+            {{ savingsAccount.currency }}
+          </strong>
+
+        </div>
+
+        <div>
+
+          <span>
+            Account ID
+          </span>
+
+          <strong>
+            {{ savingsAccount.id }}
+          </strong>
+
         </div>
 
       </div>
+
+      }
 
 
       <div class="account-actions">
@@ -486,15 +556,15 @@
         </a>
 
         <a routerLink="/transactions" class="action-button">
-          Deposit checks
-        </a>
-
-        <a routerLink="/transactions" class="action-button">
-          Transfer
+          Deposit
         </a>
 
         <a routerLink="/transactions" class="action-button">
           Withdraw
+        </a>
+
+        <a routerLink="/transactions" class="action-button">
+          Transfer
         </a>
 
       </div>
@@ -505,20 +575,18 @@
         <div class="transactions-heading">
 
           <div class="transactions-title">
-
-            <strong>
-              Recent Transactions
-            </strong>
-
-            <span>
-              (...{{ savingsAccount.accountNumber.slice(-4) }})
-            </span>
-
+            Recent Transactions
           </div>
 
-          <a routerLink="/transactions">
-            View all transactions
-          </a>
+          <button type="button" class="view-transactions-button" (click)="toggleTransactions()">
+
+            {{
+            showAllTransactions
+            ? 'Hide transactions'
+            : 'View all transactions'
+            }}
+
+          </button>
 
         </div>
 
@@ -526,15 +594,47 @@
         <div class="transaction-meta">
 
           <span>
-            Date:
-            {{ today | date:'MMM d, y' }}
+            Sort By:
           </span>
 
-          <span>
-            Sort By:
-            <strong>Recent</strong>
-            ⌄
-          </span>
+          <div class="sort-wrapper">
+
+            <button type="button" class="sort-button" (click)="toggleSortMenu()" [attr.aria-expanded]="sortMenuOpen">
+
+              {{ transactionSort }}
+
+              <span>
+                {{ sortMenuOpen ? '⌃' : '⌄' }}
+              </span>
+
+            </button>
+
+
+            @if (sortMenuOpen) {
+
+            <div class="sort-dropdown">
+
+              <button type="button" (click)="setTransactionSort('Recent')">
+                Recent
+              </button>
+
+              <button type="button" (click)="setTransactionSort('Oldest')">
+                Oldest
+              </button>
+
+              <button type="button" (click)="setTransactionSort('Highest Amount')">
+                Highest Amount
+              </button>
+
+              <button type="button" (click)="setTransactionSort('Lowest Amount')">
+                Lowest Amount
+              </button>
+
+            </div>
+
+            }
+
+          </div>
 
         </div>
 
@@ -544,17 +644,19 @@
         <div class="transaction-list">
 
           @for (
-          transaction of savingsTransactions;
+          transaction of getDisplayedTransactions(savingsTransactions);
           track transaction.id
           ) {
 
           <div class="transaction-row">
 
-            <div class="merchant-icon" [class]="getTransactionClass(transaction)">
+            <div class="merchant-icon" [class.deposit]="transaction.type === 'DEPOSIT'"
+              [class.withdraw]="transaction.type === 'WITHDRAW'" [class.transfer]="transaction.type === 'TRANSFER'">
 
               {{ getTransactionIcon(transaction) }}
 
             </div>
+
 
             <div class="transaction-description">
 
@@ -563,12 +665,14 @@
               </strong>
 
               <span>
-                {{ transaction.createdAt | date:'MMM d, y' }}
+                {{ transaction.createdAt | date:'MMM d, y, h:mm a' }}
               </span>
 
             </div>
 
-            <div class="transaction-amount" [class]="getTransactionClass(transaction)">
+
+            <div class="transaction-amount" [class.deposit]="transaction.type === 'DEPOSIT'"
+              [class.withdraw]="transaction.type === 'WITHDRAW'" [class.transfer]="transaction.type === 'TRANSFER'">
 
               {{ getTransactionAmount(transaction) }}
 
@@ -583,7 +687,7 @@
         } @else {
 
         <div class="empty-transactions">
-          No recent transactions.
+          No transactions available.
         </div>
 
         }
@@ -596,8 +700,8 @@
 
 
     <!-- =========================================
-         TRANSACTION ACTIVITY
-         ========================================= -->
+           TRANSACTION ACTIVITY
+           ========================================= -->
 
     <section class="activity-card">
 
@@ -605,98 +709,124 @@
 
         <div>
 
-          <div class="activity-title-row">
-
-            <h2>
-              Transaction Activity
-            </h2>
-
-            <span class="activity-status">
-              ●
-            </span>
-
-          </div>
+          <h2>
+            Transaction Activity
+          </h2>
 
           <p>
-            All deposits, withdrawals and transfers
+            Overview of your recent account activity.
           </p>
 
         </div>
 
 
-        <button type="button" class="period-button">
+        <div class="period-wrapper">
 
-          <span>▣</span>
+          <button type="button" class="period-button" (click)="toggleActivityPeriodMenu()"
+            [attr.aria-expanded]="activityPeriodMenuOpen">
 
-          Last 5 Months
+            <span>
+              ▣
+            </span>
 
-          <span>⌄</span>
+            {{ activityPeriod }}
 
-        </button>
+            <span>
+              {{ activityPeriodMenuOpen ? '⌃' : '⌄' }}
+            </span>
+
+          </button>
+
+
+          @if (activityPeriodMenuOpen) {
+
+          <div class="period-dropdown">
+
+            <button type="button" (click)="setActivityPeriod('Last 3 Months')">
+              Last 3 Months
+            </button>
+
+            <button type="button" (click)="setActivityPeriod('Last 5 Months')">
+              Last 5 Months
+            </button>
+
+            <button type="button" (click)="setActivityPeriod('All Activity')">
+              All Activity
+            </button>
+
+          </div>
+
+          }
+
+        </div>
 
       </div>
 
+
+      <!-- Activity Legend -->
 
       <div class="activity-legend">
 
         <span>
-          <i class="legend deposits"></i>
-          deposits
+
+          <span class="legend deposits"></span>
+
+          Deposits
+
         </span>
 
         <span>
-          <i class="legend withdrawals"></i>
-          withdrawals
+
+          <span class="legend withdrawals"></span>
+
+          Withdrawals
+
         </span>
 
         <span>
-          <i class="legend transfers"></i>
-          transfers
+
+          <span class="legend transfers"></span>
+
+          Transfers
+
         </span>
 
       </div>
 
 
+      <!-- Activity Chart -->
+
       <div class="chart">
 
         @for (
-        month of activity;
-        track month.month
+        item of getDisplayedActivity();
+        track item.month
         ) {
 
         <div class="chart-column">
 
           <div class="bars">
 
-            <div class="bar deposits" [style.height.%]="
-                getBarHeight(
-                  month.deposits,
-                  activityMaximum
-                )
-              ">
-            </div>
+            <div class="bar deposits" [style.height.%]="getBarHeight(
+                    item.deposits,
+                    activityMaximum
+                  )" title="Deposits"></div>
 
-            <div class="bar withdrawals" [style.height.%]="
-                getBarHeight(
-                  month.withdrawals,
-                  activityMaximum
-                )
-              ">
-            </div>
+            <div class="bar withdrawals" [style.height.%]="getBarHeight(
+                    item.withdrawals,
+                    activityMaximum
+                  )" title="Withdrawals"></div>
 
-            <div class="bar transfers" [style.height.%]="
-                getBarHeight(
-                  month.transfers,
-                  activityMaximum
-                )
-              ">
-            </div>
+            <div class="bar transfers" [style.height.%]="getBarHeight(
+                    item.transfers,
+                    activityMaximum
+                  )" title="Transfers"></div>
 
           </div>
 
-          <span class="month-label">
-            {{ month.month }}
-          </span>
+          <div class="month-label">
+            {{ item.month }}
+          </div>
 
         </div>
 
@@ -705,7 +835,6 @@
       </div>
 
     </section>
-
 
   </main>
 

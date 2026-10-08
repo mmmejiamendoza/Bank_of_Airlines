@@ -7,11 +7,10 @@ import {
 
 import {
   CurrencyPipe,
-  DatePipe,
-  UpperCasePipe
+  DatePipe
 } from '@angular/common';
 
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { AccountService } from '../../../core/services/account.service';
@@ -28,7 +27,6 @@ import {
   imports: [
     CurrencyPipe,
     DatePipe,
-    UpperCasePipe,
     RouterLink
   ],
   templateUrl: './dashboard.html',
@@ -39,86 +37,109 @@ export class Dashboard implements OnInit {
   private authService = inject(AuthService);
   private accountService = inject(AccountService);
   private transactionService = inject(TransactionService);
+  private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
 
   currentUser: User | null = null;
 
   account: Account | null = null;
-
-  /*
-   * The current mock contract provides one account per user.
-   * checkingAccount is the account supplied by AccountService.
-   */
   checkingAccount: Account | null = null;
-
-  /*
-   * Savings is kept optional because the current mock data
-   * does not contain a separate savings account.
-   */
   savingsAccount: Account | null = null;
 
   recentTransactions: Transaction[] = [];
-
   checkingTransactions: Transaction[] = [];
-
   savingsTransactions: Transaction[] = [];
 
   isLoading = true;
-
   today = new Date();
 
-  /*
-   * Simple mock activity values used only for the dashboard
-   * visual chart. The backend can replace these later.
-   */
- activity = [
-  {
-    month: 'MAY',
-    deposits: 35,
-    withdrawals: 18,
-    transfers: 25
-  },
-  {
-    month: 'JUN',
-    deposits: 55,
-    withdrawals: 30,
-    transfers: 40
-  },
-  {
-    month: 'JUL',
-    deposits: 42,
-    withdrawals: 24,
-    transfers: 32
-  },
-  {
-    month: 'AUG',
-    deposits: 68,
-    withdrawals: 38,
-    transfers: 52
-  },
-  {
-    month: 'SEP',
-    deposits: 50,
-    withdrawals: 32,
-    transfers: 45
-  }
-];
 
-activityMaximum = 100;
+  // =========================================
+  // INTERACTIVE DASHBOARD STATE
+  // =========================================
+
+  accountDetailsOpen = false;
+  showAllTransactions = false;
+  profileMenuOpen = false;
+
+  sortMenuOpen = false;
+  activityPeriodMenuOpen = false;
+
+  transactionSort:
+    | 'Recent'
+    | 'Oldest'
+    | 'Highest Amount'
+    | 'Lowest Amount' = 'Recent';
+
+  activityPeriod:
+    | 'Last 3 Months'
+    | 'Last 5 Months'
+    | 'All Activity' = 'Last 5 Months';
+
+
+  // =========================================
+  // MOCK ACTIVITY DATA
+  // =========================================
+
+  activity = [
+    {
+      month: 'MAY',
+      deposits: 55,
+      withdrawals: 25,
+      transfers: 35
+    },
+    {
+      month: 'JUN',
+      deposits: 70,
+      withdrawals: 40,
+      transfers: 25
+    },
+    {
+      month: 'JUL',
+      deposits: 45,
+      withdrawals: 60,
+      transfers: 35
+    },
+    {
+      month: 'AUG',
+      deposits: 80,
+      withdrawals: 45,
+      transfers: 55
+    },
+    {
+      month: 'SEP',
+      deposits: 60,
+      withdrawals: 35,
+      transfers: 45
+    }
+  ];
+
+  activityMaximum = 100;
+
+
+  // =========================================
+  // LOAD DASHBOARD
+  // =========================================
 
   ngOnInit(): void {
+
     setTimeout(() => {
+
       this.loadDashboard();
 
       this.isLoading = false;
 
       this.cdr.detectChanges();
+
     }, 700);
+
   }
+
 
   private loadDashboard(): void {
 
-    this.currentUser = this.authService.getCurrentUser();
+    this.currentUser =
+      this.authService.getCurrentUser();
 
     if (!this.currentUser) {
       return;
@@ -133,11 +154,11 @@ activityMaximum = 100;
 
     this.savingsAccount = null;
 
+
     if (this.checkingAccount) {
-      // Call getTransactions and subscribe to the Observable
+
       this.transactionService.getTransactions(this.checkingAccount.id).subscribe({
         next: (response: any) => {
-          // Adjust based on your API response wrapper (e.g., response.data or response directly)
           const transactions = Array.isArray(response) ? response : (response?.data || []);
           
           this.checkingTransactions = transactions;
@@ -147,12 +168,218 @@ activityMaximum = 100;
         },
         error: (err) => console.error('Error loading transactions:', err)
       });
+
     }
 
     this.savingsTransactions = [];
+
   }
 
-  getTransactionIcon(transaction: Transaction): string {
+
+  // =========================================
+  // ACCOUNT DETAILS
+  // =========================================
+
+  toggleAccountDetails(): void {
+
+    this.accountDetailsOpen =
+      !this.accountDetailsOpen;
+
+  }
+
+
+  // =========================================
+  // TRANSACTIONS
+  // =========================================
+
+  toggleTransactions(): void {
+
+    this.showAllTransactions =
+      !this.showAllTransactions;
+
+  }
+
+
+  // =========================================
+  // PROFILE MENU
+  // =========================================
+
+  toggleProfileMenu(): void {
+
+    this.profileMenuOpen =
+      !this.profileMenuOpen;
+
+  }
+
+
+  // =========================================
+  // SORT MENU
+  // =========================================
+
+  toggleSortMenu(): void {
+
+    this.sortMenuOpen =
+      !this.sortMenuOpen;
+
+    this.activityPeriodMenuOpen = false;
+
+  }
+
+
+  setTransactionSort(
+    sort:
+      | 'Recent'
+      | 'Oldest'
+      | 'Highest Amount'
+      | 'Lowest Amount'
+  ): void {
+
+    this.transactionSort = sort;
+
+    this.sortMenuOpen = false;
+
+  }
+
+
+  // =========================================
+  // ACTIVITY PERIOD MENU
+  // =========================================
+
+  toggleActivityPeriodMenu(): void {
+
+    this.activityPeriodMenuOpen =
+      !this.activityPeriodMenuOpen;
+
+    this.sortMenuOpen = false;
+
+  }
+
+
+  setActivityPeriod(
+    period:
+      | 'Last 3 Months'
+      | 'Last 5 Months'
+      | 'All Activity'
+  ): void {
+
+    this.activityPeriod = period;
+
+    this.activityPeriodMenuOpen = false;
+
+  }
+
+
+  // =========================================
+  // DISPLAYED TRANSACTIONS
+  // =========================================
+
+  getDisplayedTransactions(
+    transactions: Transaction[]
+  ): Transaction[] {
+
+    const sortedTransactions =
+      [...transactions];
+
+
+    if (this.transactionSort === 'Recent') {
+
+      sortedTransactions.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() -
+          new Date(a.createdAt).getTime()
+      );
+
+    }
+
+
+    if (this.transactionSort === 'Oldest') {
+
+      sortedTransactions.sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() -
+          new Date(b.createdAt).getTime()
+      );
+
+    }
+
+
+    if (this.transactionSort === 'Highest Amount') {
+
+      sortedTransactions.sort(
+        (a, b) =>
+          b.amount - a.amount
+      );
+
+    }
+
+
+    if (this.transactionSort === 'Lowest Amount') {
+
+      sortedTransactions.sort(
+        (a, b) =>
+          a.amount - b.amount
+      );
+
+    }
+
+
+    if (this.showAllTransactions) {
+
+      return sortedTransactions;
+
+    }
+
+
+    return sortedTransactions.slice(0, 3);
+
+  }
+
+
+  // =========================================
+  // DISPLAYED ACTIVITY
+  // =========================================
+
+  getDisplayedActivity() {
+
+    if (this.activityPeriod === 'Last 3 Months') {
+
+      return this.activity.slice(-3);
+
+    }
+
+
+    if (this.activityPeriod === 'All Activity') {
+
+      return this.activity;
+
+    }
+
+
+    return this.activity.slice(-5);
+
+  }
+
+
+  // =========================================
+  // LOGOUT
+  // =========================================
+
+  logout(): void {
+
+    this.authService.logout();
+
+    this.router.navigate(['/login']);
+
+  }
+
+
+  // =========================================
+  // TRANSACTION DISPLAY HELPERS
+  // =========================================
+
+  getTransactionIcon(
+    transaction: Transaction
+  ): string {
 
     if (transaction.type === 'DEPOSIT') {
       return '+';
@@ -163,9 +390,13 @@ activityMaximum = 100;
     }
 
     return '↗';
+
   }
 
-  getTransactionClass(transaction: Transaction): string {
+
+  getTransactionClass(
+    transaction: Transaction
+  ): string {
 
     if (transaction.type === 'DEPOSIT') {
       return 'deposit';
@@ -176,20 +407,36 @@ activityMaximum = 100;
     }
 
     return 'transfer';
+
   }
 
-  getTransactionAmount(transaction: Transaction): string {
+
+  getTransactionAmount(
+    transaction: Transaction
+  ): string {
 
     if (transaction.type === 'DEPOSIT') {
+
       return `+$${transaction.amount.toFixed(2)}`;
+
     }
+
 
     if (transaction.type === 'WITHDRAW') {
+
       return `-$${transaction.amount.toFixed(2)}`;
+
     }
 
+
     return `$${transaction.amount.toFixed(2)}`;
+
   }
+
+
+  // =========================================
+  // CHART HELPERS
+  // =========================================
 
   getBarHeight(
     value: number,
@@ -202,7 +449,12 @@ activityMaximum = 100;
 
     return Math.max(
       8,
-      Math.min(100, (value / maximum) * 100)
+      Math.min(
+        100,
+        (value / maximum) * 100
+      )
     );
+
   }
+
 }

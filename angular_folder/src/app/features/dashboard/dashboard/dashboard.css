@@ -1364,3 +1364,182 @@
     font-size: 7px;
   }
 }
+/* =========================================
+   INTERACTIVE DASHBOARD CONTROLS
+   ========================================= */
+
+.profile-wrapper {
+  position: absolute !important;
+  top: 50% !important;
+  right: 7% !important;
+  transform: translateY(-50%) !important;
+  z-index: 1001;
+}
+
+.profile-area {
+  position: static !important;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 6px 8px;
+  font: inherit;
+  text-align: left;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.profile-area:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.profile-arrow {
+  font-size: 10px;
+  margin-left: 4px;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 240px;
+  background: #ffffff;
+  border: 1px solid #dce5e8;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.profile-dropdown-header {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-dropdown-header strong {
+  color: #000000;
+  font-size: 15px;
+}
+
+.profile-dropdown-header span {
+  color: #555555;
+  font-size: 13px;
+}
+
+.profile-dropdown-header small {
+  color: #777777;
+  font-size: 12px;
+}
+
+.profile-dropdown-divider {
+  height: 1px;
+  background: #e5eaec;
+}
+
+.profile-dropdown-item {
+  width: 100%;
+  border: none;
+  background: #ffffff;
+  padding: 13px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: left;
+}
+
+.profile-dropdown-item:hover {
+  background: #f2f6f7;
+}
+
+.logout-button {
+  color: #e32424;
+  font-weight: 600;
+}
+
+
+/* =========================================
+   ACCOUNT DETAILS BUTTON
+   ========================================= */
+
+.details-header {
+  width: 100%;
+  border: none;
+  background: rgba(140, 180, 196, 0.52);
+  color: #333333;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.details-header:hover {
+  filter: brightness(0.97);
+}
+
+.savings-card .details-header {
+  background: rgba(232, 168, 170, 0.58);
+}
+
+
+/* =========================================
+   VIEW ALL TRANSACTIONS BUTTON
+   ========================================= */
+
+.view-transactions-button {
+  border: none;
+  background: transparent;
+  color: #168fc3;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.view-transactions-button:hover {
+  color: #0075aa;
+  text-decoration: underline;
+}
+
+.savings-card .view-transactions-button {
+  color: #e32424;
+}
+
+
+/* =========================================
+   FOCUS STATES
+   ========================================= */
+
+.profile-area:focus-visible,
+.details-header:focus-visible,
+.view-transactions-button:focus-visible,
+.profile-dropdown-item:focus-visible {
+  outline: 2px solid #3a24e3;
+  outline-offset: 2px;
+}
+
+
+/* =========================================
+   INTERACTIVE DASHBOARD MOBILE
+   ========================================= */
+
+@media (max-width: 700px) {
+
+  .profile-dropdown {
+    right: -8px;
+    width: 220px;
+  }
+
+  .view-transactions-button {
+    font-size: 8px;
+  }
+
+  .details-header {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+}
