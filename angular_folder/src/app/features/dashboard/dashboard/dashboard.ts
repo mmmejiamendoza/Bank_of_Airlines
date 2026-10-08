@@ -131,25 +131,22 @@ activityMaximum = 100;
 
     this.checkingAccount = this.account;
 
-    /*
-     * There is currently no separate savings account in
-     * accounts.json, so this remains null until the contract
-     * provides one.
-     */
     this.savingsAccount = null;
 
     if (this.checkingAccount) {
-
-      this.checkingTransactions =
-        this.transactionService.getTransactionsByAccountId(
-          this.checkingAccount.id
-        );
-
-      this.recentTransactions =
-        this.transactionService.getRecentTransactions(
-          this.checkingAccount.id,
-          5
-        );
+      // Call getTransactions and subscribe to the Observable
+      this.transactionService.getTransactions(this.checkingAccount.id).subscribe({
+        next: (response: any) => {
+          // Adjust based on your API response wrapper (e.g., response.data or response directly)
+          const transactions = Array.isArray(response) ? response : (response?.data || []);
+          
+          this.checkingTransactions = transactions;
+          this.recentTransactions = transactions.slice(0, 5);
+          
+          this.cdr.detectChanges();
+        },
+        error: (err) => console.error('Error loading transactions:', err)
+      });
     }
 
     this.savingsTransactions = [];
