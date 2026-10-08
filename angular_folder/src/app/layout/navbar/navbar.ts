@@ -13,6 +13,7 @@ export class Navbar {
   readonly menuOpen = input(false);
   readonly userName = input('');
   readonly userId = input('');
+  readonly userEmail = input('');
   readonly menuToggled = output<void>();
   readonly logoutRequested = output<void>();
 

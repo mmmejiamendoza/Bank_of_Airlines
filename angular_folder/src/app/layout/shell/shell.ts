@@ -15,6 +15,10 @@ export class Shell {
   private currentUser = inject(CurrentUserService);
   private router = inject(Router);
 
+  constructor() {
+    console.log('current user:', this.currentUser.user());
+  }
+  
   readonly sidebarOpen = signal(false);
 
   logout(): void {
@@ -29,6 +33,7 @@ export class Shell {
     return u ? `${u.firstName} ${u.lastName}` : '';
   });
   readonly userId = computed(() => this.currentUser.user()?.id ?? '');
+  readonly userEmail = computed(() => this.currentUser.user()?.email ?? '');
 
   toggleSidebar(): void {
     this.sidebarOpen.update((open) => !open);
