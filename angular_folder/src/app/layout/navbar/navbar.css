@@ -1,0 +1,49 @@
+.navbar {
+  height: var(--navbar-height);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 1rem;
+  background: var(--color-white);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-muted) 50%, white);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.navbar__menu {
+  border: 0;
+  background: transparent;
+  font-size: 1.35rem;
+  cursor: pointer;
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex: 1;
+}
+
+.navbar__mark {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 6px;
+  background: var(--color-primary);
+  color: var(--color-white);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.navbar__title {
+  font-weight: 700;
+}
+
+.navbar__user {
+  font-size: 0.85rem;
+  color: #445556;
+}

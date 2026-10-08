@@ -1,0 +1,32 @@
+.shell {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.shell__body {
+  display: flex;
+  flex: 1;
+  position: relative;
+}
+
+.shell__main {
+  flex: 1;
+  min-width: 0;
+  padding: 1.25rem;
+}
+
+.shell__scrim {
+  display: none;
+}
+
+@media (max-width: 800px) {
+  .shell__scrim {
+    display: block;
+    position: fixed;
+    inset: var(--navbar-height) 0 0 0;
+    z-index: 14;
+    border: 0;
+    background: rgb(0 0 0 / 35%);
+  }
+}

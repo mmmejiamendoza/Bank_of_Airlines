@@ -1,0 +1,20 @@
+<aside
+  id="app-sidebar"
+  class="sidebar"
+  [class.sidebar--closed]="!open()"
+  [attr.aria-hidden]="!open()"
+  aria-label="Main"
+>
+  <nav class="sidebar__nav">
+    @for (link of links(); track link.path) {
+      <a
+        class="sidebar__link"
+        [routerLink]="link.path"
+        routerLinkActive="sidebar__link--active"
+        [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+      >
+        {{ link.label }}
+      </a>
+    }
+  </nav>
+</aside>
