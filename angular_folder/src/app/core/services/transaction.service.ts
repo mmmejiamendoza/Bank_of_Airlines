@@ -33,6 +33,15 @@ getAccount(accountId: string): Observable<ApiResponse<Account>> {
     );
 }
 
+getAccountByUserId(userId: string): Observable<ApiResponse<Account>> {
+  return this.load().pipe(
+    map(() => {
+      const account = this.accounts.find((a) => a.userId === userId);
+      return account ? this.ok({ ...account }) : this.fail<Account>('ACCOUNT_NOT_FOUND', 'Account not found.');
+    }),
+  );
+}
+
 getTransactions(accountId: string): Observable<ApiResponse<Transaction[]>> {
     return this.load().pipe(
         map(() => {

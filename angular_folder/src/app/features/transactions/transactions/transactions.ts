@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Observable } from 'rxjs';
 import { Account, ApiResponse, Recipient, Transaction } from '../../../core/models';
 import { TransactionService } from '../../../core/services/transaction.service';
+//import { CurrentUserService } from '../../../core/services/current-user.service';
 
 type Mode = 'deposit' | 'withdraw' | 'transfer';
 
@@ -27,7 +28,7 @@ export class Transactions implements OnInit {
   selectedAccountNumber = signal<string | null>(null);
   feedback = signal<{ type: 'success' | 'error'; text: string } | null>(null);
 
-  private amountRules = [Validators.required, Validators.min(0.01), Validators.pattern(/^\d+(\.\d{1, 2})?$/)];
+  private amountRules = [Validators.required, Validators.min(0.01), Validators.pattern(/^\d+(\.\d{1,2})?$/)];
 
   depositForm = this.fb.group({ amount: ['', this.amountRules], description: [''] });
   withdrawForm = this.fb.group({ amount: ['', this.amountRules], description: [''] });
