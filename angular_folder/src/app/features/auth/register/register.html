@@ -1,238 +1,86 @@
-<div class="register-page">
+<div class="auth-page">
+  <div class="auth-card">
 
-  <!-- =========================================
-       TOP HEADER
-       ========================================= -->
-
-  <header class="top-header">
-
-    <div class="header-line"></div>
-
-    <div class="brand-mark">
-
-      <div class="brand-symbol">
-        <span class="wing wing-blue"></span>
-        <span class="wing wing-purple"></span>
-        <span class="wing wing-red"></span>
+    <div class="auth-logo">
+      <div class="logo-mark">
+        <span class="logo-blue"></span>
+        <span class="logo-purple"></span>
+        <span class="logo-red"></span>
       </div>
 
-      <span class="brand-name">
-        BANK OF AIRLINES
-      </span>
-
+      <h1>BANK OF AIRLINES</h1>
     </div>
 
-    <div class="secure-mark">
-      <span>✓</span>
+    <div class="auth-heading">
+      <h2>Create an account</h2>
+      <p>Register to get started with Bank of Airlines.</p>
     </div>
 
-  </header>
+    @if (errorMessage) {
+    <div class="error-message" role="alert">
+      {{ errorMessage }}
+    </div>
+    }
 
+    <form (ngSubmit)="onRegister()">
 
-  <!-- =========================================
-       MAIN CONTENT
-       ========================================= -->
+      <div class="form-row">
 
-  <main class="register-content">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input id="firstName" type="text" name="firstName" [(ngModel)]="firstName" placeholder="Enter your first name"
+            autocomplete="given-name" />
+        </div>
 
-    <!-- =========================================
-         WELCOME PANEL
-         ========================================= -->
-
-    <section class="welcome-panel">
-
-      <div class="welcome-content">
-
-        <p class="welcome-eyebrow">
-          BANK OF AIRLINES
-        </p>
-
-        <h1>
-          JOIN OUR<br />
-          TRAVELERS
-        </h1>
-
-        <p class="welcome-message">
-          Open your account<br />
-          and start managing<br />
-          your money with ease
-        </p>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input id="lastName" type="text" name="lastName" [(ngModel)]="lastName" placeholder="Enter your last name"
+            autocomplete="family-name" />
+        </div>
 
       </div>
 
-    </section>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" name="email" [(ngModel)]="email" placeholder="Enter your email"
+          autocomplete="email" />
+      </div>
 
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" [(ngModel)]="password" placeholder="Create a password"
+          autocomplete="new-password" />
 
-    <!-- =========================================
-         REGISTER PANEL
-         ========================================= -->
+        <small class="password-hint">
+          Must contain at least 4 characters, 1 uppercase letter,
+          1 lowercase letter, and 1 special character.
+        </small>
+      </div>
 
-    <section class="register-panel">
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input id="confirmPassword" type="password" name="confirmPassword" [(ngModel)]="confirmPassword"
+          placeholder="Confirm your password" autocomplete="new-password" />
+      </div>
 
-      <div class="register-container">
-
-        <!-- Header -->
-        <div class="register-heading">
-
-          <p class="section-label">
-            ACCOUNT REGISTRATION
-          </p>
-
-          <h2>
-            CREATE YOUR ACCOUNT
-          </h2>
-
-          <p class="heading-description">
-            Enter your information below to get started.
-          </p>
-
-        </div>
-
-
-        <!-- Error message -->
-        @if (errorMessage) {
-
-        <div class="error-message">
-
-          <span class="error-icon">
-            !
-          </span>
-
-          <span>
-            {{ errorMessage }}
-          </span>
-
-        </div>
-
+      <button type="submit" class="auth-button" [disabled]="isLoading">
+        @if (isLoading) {
+        <span class="button-spinner"></span>
+        Creating account...
+        } @else {
+        Create Account
         }
+      </button>
 
+    </form>
 
-        <!-- Registration form -->
-        <form class="register-form" (ngSubmit)="onRegister()">
+    <div class="auth-footer">
+      <span>Already have an account?</span>
 
-          <!-- First + Last Name -->
-          <div class="name-row">
+      <button type="button" class="auth-link" (click)="goToLogin()">
+        Log in
+      </button>
+    </div>
 
-            <div class="form-group">
-
-              <label for="firstName">
-                First Name
-                <span>*</span>
-              </label>
-
-              <input id="firstName" name="firstName" type="text" [(ngModel)]="firstName" autocomplete="given-name" />
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label for="lastName">
-                Last Name
-                <span>*</span>
-              </label>
-
-              <input id="lastName" name="lastName" type="text" [(ngModel)]="lastName" autocomplete="family-name" />
-
-            </div>
-
-          </div>
-
-
-          <!-- Email -->
-          <div class="form-group">
-
-            <label for="email">
-              Email Address
-              <span>*</span>
-            </label>
-
-            <input id="email" name="email" type="email" [(ngModel)]="email" autocomplete="email" />
-
-          </div>
-
-
-          <!-- Password -->
-          <div class="form-group">
-
-            <label for="password">
-              Password
-              <span>*</span>
-            </label>
-
-            <input id="password" name="password" type="password" [(ngModel)]="password" autocomplete="new-password" />
-
-          </div>
-
-
-          <!-- Confirm Password -->
-          <div class="form-group">
-
-            <label for="confirmPassword">
-              Confirm Password
-              <span>*</span>
-            </label>
-
-            <input id="confirmPassword" name="confirmPassword" type="password" [(ngModel)]="confirmPassword"
-              autocomplete="new-password" />
-
-          </div>
-
-
-          <!-- Create account button -->
-          <div class="register-button-wrapper">
-
-            <button type="submit" class="register-button" [disabled]="isLoading">
-
-              @if (isLoading) {
-
-              <span class="button-spinner"></span>
-
-              <span>
-                CREATING...
-              </span>
-
-              } @else {
-
-              <span>
-                CREATE ACCOUNT
-              </span>
-
-              }
-
-            </button>
-
-          </div>
-
-        </form>
-
-
-        <!-- Login link -->
-        <div class="login-link-section">
-
-          <span>
-            Already have an account?
-          </span>
-
-          <button type="button" (click)="goToLogin()">
-            Log in
-          </button>
-
-        </div>
-
-
-        <div class="registration-note">
-          <span class="note-icon">✓</span>
-
-          <span>
-            Your account information is securely handled.
-          </span>
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
+  </div>
 </div>
