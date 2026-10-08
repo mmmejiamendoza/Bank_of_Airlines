@@ -3,14 +3,24 @@
     "id": "AC1001",
     "userId": "ML1001",
     "accountNumber": "10001001",
-    "balance": 2500.00,
-    "currency": "USD"
+    "balance": 2450.00,
+    "currency": "USD",
+    "type": "CHECKING"
+  },
+  {
+    "id": "AC1003",
+    "userId": "ML1001",
+    "accountNumber": "10001003",
+    "balance": 12345.00,
+    "currency": "USD",
+    "type": "SAVINGS"
   },
   {
     "id": "AC1002",
     "userId": "JS1002",
     "accountNumber": "10001002",
     "balance": 1750.50,
-    "currency": "USD"
+    "currency": "USD",
+    "type": "CHECKING"
   }
 ]

@@ -1,167 +1,713 @@
-<div class="dashboard">
+<div class="dashboard-page">
 
-  <div class="dashboard-header">
-    <div>
-      <p class="eyebrow">Dashboard</p>
+  <!-- =========================================
+       TOP NAVIGATION
+       ========================================= -->
 
-      @if (currentUser) {
-      <h1>Welcome back, {{ currentUser.firstName }}</h1>
-      } @else {
-      <h1>Welcome back</h1>
-      }
+<header class="dashboard-header">
 
-      <p class="subtitle">
-        Here's an overview of your account.
-      </p>
+  <!-- LEFT SIDE -->
+  <div class="header-left">
+
+    <button class="menu-button" type="button" aria-label="Open menu">
+      ☰
+    </button>
+
+    <div class="dashboard-brand">
+
+      <div class="mini-logo">
+        <span class="mini-blue"></span>
+        <span class="mini-purple"></span>
+        <span class="mini-red"></span>
+      </div>
+
+      <div class="brand-text">
+
+        <strong>
+          BANK OF AIRLINES
+        </strong>
+
+        <span>
+          ONLINE BANKING
+        </span>
+
+      </div>
+
     </div>
+
   </div>
 
-  @if (isLoading) {
 
-  <div class="loading-card">
-    <div class="spinner"></div>
-    <p>Loading your account...</p>
-  </div>
+  <!-- CENTER NAVIGATION -->
+  <nav class="main-navigation">
 
-  } @else {
+    <a routerLink="/dashboard" class="nav-link active">
+      Accounts
+    </a>
 
-  @if (account) {
+    <a routerLink="/transactions" class="nav-link">
+      Transactions
+    </a>
 
-  <section class="balance-card">
+    <a routerLink="/transactions" class="nav-link">
+      Transfer
+    </a>
 
-    <div class="balance-header">
-      <div>
-        <p class="card-label">Current Balance</p>
+  </nav>
 
-        <h2>
-          {{ account.balance | currency:'USD' }}
-        </h2>
-      </div>
 
-      <div class="account-badge">
-        {{ account.currency }}
-      </div>
+  <!-- RIGHT SIDE -->
+  @if (currentUser) {
+
+  <div class="profile-area">
+
+    <div class="profile-avatar">
+      {{ currentUser.firstName.charAt(0) }}
     </div>
 
-    <div class="account-details">
+    <div class="profile-info">
 
-      <div>
-        <span>Account Number</span>
-        <strong>{{ account.accountNumber }}</strong>
-      </div>
+      <strong>
+        {{ currentUser.firstName }}
+        {{ currentUser.lastName }}
+      </strong>
 
-      <div>
-        <span>Account ID</span>
-        <strong>{{ account.id }}</strong>
-      </div>
-
-    </div>
-
-  </section>
-
-  <section class="transactions-section">
-
-    <div class="section-header">
-
-      <div>
-        <p class="eyebrow">Activity</p>
-        <h2>Recent Transactions</h2>
-      </div>
-
-      <a routerLink="/transactions">
-        View all
-      </a>
+      <span>
+        {{ currentUser.id }}
+      </span>
 
     </div>
 
-    @if (recentTransactions.length > 0) {
-
-    <div class="transactions-list">
-
-      @for (
-      transaction of recentTransactions;
-      track transaction.id
-      ) {
-
-      <div class="transaction-row">
-
-        <div class="transaction-info">
-
-          <div class="transaction-icon">
-
-            @if (transaction.type === 'DEPOSIT') {
-            +
-            } @else if (transaction.type === 'WITHDRAW') {
-            −
-            } @else {
-            ↗
-            }
-
-          </div>
-
-          <div>
-
-            <strong>
-              {{ transaction.type }}
-            </strong>
-
-            <p>
-              {{ transaction.description || 'Transaction' }}
-            </p>
-
-          </div>
-
-        </div>
-
-        <div class="transaction-amount">
-
-          <strong [class.deposit]="transaction.type === 'DEPOSIT'" [class.withdraw]="transaction.type === 'WITHDRAW'">
-
-            @if (transaction.type === 'DEPOSIT') {
-            +
-            } @else {
-            -
-            }
-
-            {{ transaction.amount | currency:'USD' }}
-
-          </strong>
-
-          <span>
-            {{ transaction.createdAt | date:'MMM d, y' }}
-          </span>
-
-        </div>
-
-      </div>
-
-      }
-
-    </div>
-
-    } @else {
-
-    <div class="empty-state">
-      <p>No recent transactions.</p>
-    </div>
-
-    }
-
-  </section>
-
-  } @else {
-
-  <div class="empty-state">
-
-    <h2>Account unavailable</h2>
-
-    <p>
-      We couldn't find an account associated with your profile.
-    </p>
+    <span class="profile-arrow">
+      ▼
+    </span>
 
   </div>
 
   }
+
+</header>
+
+
+  @if (isLoading) {
+
+  <div class="dashboard-loading">
+
+    <div class="spinner"></div>
+
+    <p>
+      Loading your accounts...
+    </p>
+
+  </div>
+
+  } @else {
+
+  <main class="dashboard-content">
+
+
+    <!-- =========================================
+         WELCOME / SEARCH
+         ========================================= -->
+
+    <section class="welcome-section">
+
+      <div class="welcome-date">
+
+        @if (currentUser) {
+
+        <span>
+          WELCOME,
+          {{ currentUser.firstName | uppercase }}
+          <span class="welcome-divider">|</span>
+          {{ today | date:'MMM d, y' | uppercase }}
+        </span>
+
+        }
+
+      </div>
+
+
+      <div class="help-search">
+
+        <span class="search-icon">
+          ⌕
+        </span>
+
+        <span class="search-placeholder">
+          How can we help?
+        </span>
+
+        <span class="search-close">
+          ×
+        </span>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================================
+         CHECKING ACCOUNT
+         ========================================= -->
+
+    @if (checkingAccount) {
+
+    <section class="account-card checking-card">
+
+      <div class="account-card-header">
+
+        <span class="account-section-title">
+          Bank Accounts
+          <span class="account-count">(1)</span>
+        </span>
+
+        <span class="header-help">
+          Account overview
+        </span>
+
+      </div>
+
+
+      <div class="balance-area">
+
+        <div class="account-title">
+          TOTAL CHECKING
+          <span>
+            (...{{ checkingAccount.accountNumber.slice(-4) }})
+          </span>
+        </div>
+
+        <div class="balance-block">
+
+          <div class="balance-value">
+            {{ checkingAccount.balance | currency:'USD' }}
+          </div>
+
+          <div class="balance-label">
+            available balance
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Account details -->
+
+      <div class="details-header">
+
+        <span>
+          Account Details
+        </span>
+
+        <span class="details-arrow">
+          ⌄
+        </span>
+
+      </div>
+
+
+      <div class="account-details">
+
+        <div>
+          <span>Available balance:</span>
+
+          <strong>
+            {{ checkingAccount.balance | currency:'USD' }}
+          </strong>
+        </div>
+
+        <div>
+          <span>Remaining balance:</span>
+
+          <strong>
+            {{ checkingAccount.balance | currency:'USD' }}
+          </strong>
+        </div>
+
+        <div>
+          <span>Interest Rate:</span>
+
+          <strong>
+            0.00%
+          </strong>
+        </div>
+
+        <div>
+          <span>Account number:</span>
+
+          <strong>
+            {{ checkingAccount.accountNumber }}
+          </strong>
+        </div>
+
+        <div>
+          <span>Routing number:</span>
+
+          <strong>
+            01001001
+          </strong>
+        </div>
+
+      </div>
+
+
+      <!-- Actions -->
+
+      <div class="account-actions">
+
+        <a routerLink="/transactions" class="action-button primary-action" aria-label="Make a transaction">
+          +
+        </a>
+
+        <a routerLink="/transactions" class="action-button">
+          Deposit checks
+        </a>
+
+        <a routerLink="/transactions" class="action-button">
+          Transfer
+        </a>
+
+        <a routerLink="/transactions" class="action-button">
+          Withdraw
+        </a>
+
+      </div>
+
+
+      <!-- Transactions -->
+
+      <div class="transactions-card">
+
+        <div class="transactions-heading">
+
+          <div class="transactions-title">
+
+            <strong>
+              Recent Transactions
+            </strong>
+
+            <span>
+              (...{{ checkingAccount.accountNumber.slice(-4) }})
+            </span>
+
+          </div>
+
+          <a routerLink="/transactions">
+            View all transactions
+          </a>
+
+        </div>
+
+
+        <div class="transaction-meta">
+
+          <span>
+            Date:
+            {{ today | date:'MMM d, y' }}
+          </span>
+
+          <span>
+            Sort By:
+            <strong>Recent</strong>
+            ⌄
+          </span>
+
+        </div>
+
+
+        @if (checkingTransactions.length > 0) {
+
+        <div class="transaction-list">
+
+          @for (
+          transaction of checkingTransactions;
+          track transaction.id
+          ) {
+
+          <div class="transaction-row">
+
+            <div class="merchant-icon" [class]="getTransactionClass(transaction)">
+
+              {{ getTransactionIcon(transaction) }}
+
+            </div>
+
+
+            <div class="transaction-description">
+
+              <strong>
+                {{ transaction.description || transaction.type }}
+              </strong>
+
+              <span>
+                {{ transaction.createdAt | date:'MMM d, y' }}
+              </span>
+
+            </div>
+
+
+            <div class="transaction-amount" [class]="getTransactionClass(transaction)">
+
+              {{ getTransactionAmount(transaction) }}
+
+            </div>
+
+          </div>
+
+          }
+
+        </div>
+
+        } @else {
+
+        <div class="empty-transactions">
+          No recent transactions.
+        </div>
+
+        }
+
+      </div>
+
+    </section>
+
+    }
+
+
+    <!-- =========================================
+         SAVINGS ACCOUNT
+         ========================================= -->
+
+    @if (savingsAccount) {
+
+    <section class="account-card savings-card">
+
+      <div class="account-card-header">
+
+        <span class="account-section-title">
+          Bank Accounts
+          <span class="account-count">(1)</span>
+        </span>
+
+        <span class="header-help">
+          Savings overview
+        </span>
+
+      </div>
+
+
+      <div class="balance-area">
+
+        <div class="account-title">
+          TOTAL SAVINGS
+          <span>
+            (...{{ savingsAccount.accountNumber.slice(-4) }})
+          </span>
+        </div>
+
+        <div class="balance-block">
+
+          <div class="balance-value">
+            {{ savingsAccount.balance | currency:'USD' }}
+          </div>
+
+          <div class="balance-label">
+            available balance
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="details-header">
+
+        <span>
+          Account Details
+        </span>
+
+        <span class="details-arrow">
+          ⌄
+        </span>
+
+      </div>
+
+
+      <div class="account-details">
+
+        <div>
+          <span>Available balance:</span>
+
+          <strong>
+            {{ savingsAccount.balance | currency:'USD' }}
+          </strong>
+        </div>
+
+        <div>
+          <span>Remaining balance:</span>
+
+          <strong>
+            {{ savingsAccount.balance | currency:'USD' }}
+          </strong>
+        </div>
+
+        <div>
+          <span>Interest Rate:</span>
+
+          <strong>
+            3.41%
+          </strong>
+        </div>
+
+        <div>
+          <span>Account number:</span>
+
+          <strong>
+            {{ savingsAccount.accountNumber }}
+          </strong>
+        </div>
+
+        <div>
+          <span>Routing number:</span>
+
+          <strong>
+            01001002
+          </strong>
+        </div>
+
+      </div>
+
+
+      <div class="account-actions">
+
+        <a routerLink="/transactions" class="action-button primary-action">
+          +
+        </a>
+
+        <a routerLink="/transactions" class="action-button">
+          Deposit checks
+        </a>
+
+        <a routerLink="/transactions" class="action-button">
+          Transfer
+        </a>
+
+        <a routerLink="/transactions" class="action-button">
+          Withdraw
+        </a>
+
+      </div>
+
+
+      <div class="transactions-card">
+
+        <div class="transactions-heading">
+
+          <div class="transactions-title">
+
+            <strong>
+              Recent Transactions
+            </strong>
+
+            <span>
+              (...{{ savingsAccount.accountNumber.slice(-4) }})
+            </span>
+
+          </div>
+
+          <a routerLink="/transactions">
+            View all transactions
+          </a>
+
+        </div>
+
+
+        <div class="transaction-meta">
+
+          <span>
+            Date:
+            {{ today | date:'MMM d, y' }}
+          </span>
+
+          <span>
+            Sort By:
+            <strong>Recent</strong>
+            ⌄
+          </span>
+
+        </div>
+
+
+        @if (savingsTransactions.length > 0) {
+
+        <div class="transaction-list">
+
+          @for (
+          transaction of savingsTransactions;
+          track transaction.id
+          ) {
+
+          <div class="transaction-row">
+
+            <div class="merchant-icon" [class]="getTransactionClass(transaction)">
+
+              {{ getTransactionIcon(transaction) }}
+
+            </div>
+
+            <div class="transaction-description">
+
+              <strong>
+                {{ transaction.description || transaction.type }}
+              </strong>
+
+              <span>
+                {{ transaction.createdAt | date:'MMM d, y' }}
+              </span>
+
+            </div>
+
+            <div class="transaction-amount" [class]="getTransactionClass(transaction)">
+
+              {{ getTransactionAmount(transaction) }}
+
+            </div>
+
+          </div>
+
+          }
+
+        </div>
+
+        } @else {
+
+        <div class="empty-transactions">
+          No recent transactions.
+        </div>
+
+        }
+
+      </div>
+
+    </section>
+
+    }
+
+
+    <!-- =========================================
+         TRANSACTION ACTIVITY
+         ========================================= -->
+
+    <section class="activity-card">
+
+      <div class="activity-header">
+
+        <div>
+
+          <div class="activity-title-row">
+
+            <h2>
+              Transaction Activity
+            </h2>
+
+            <span class="activity-status">
+              ●
+            </span>
+
+          </div>
+
+          <p>
+            All deposits, withdrawals and transfers
+          </p>
+
+        </div>
+
+
+        <button type="button" class="period-button">
+
+          <span>▣</span>
+
+          Last 5 Months
+
+          <span>⌄</span>
+
+        </button>
+
+      </div>
+
+
+      <div class="activity-legend">
+
+        <span>
+          <i class="legend deposits"></i>
+          deposits
+        </span>
+
+        <span>
+          <i class="legend withdrawals"></i>
+          withdrawals
+        </span>
+
+        <span>
+          <i class="legend transfers"></i>
+          transfers
+        </span>
+
+      </div>
+
+
+      <div class="chart">
+
+        @for (
+        month of activity;
+        track month.month
+        ) {
+
+        <div class="chart-column">
+
+          <div class="bars">
+
+            <div class="bar deposits" [style.height.%]="
+                getBarHeight(
+                  month.deposits,
+                  activityMaximum
+                )
+              ">
+            </div>
+
+            <div class="bar withdrawals" [style.height.%]="
+                getBarHeight(
+                  month.withdrawals,
+                  activityMaximum
+                )
+              ">
+            </div>
+
+            <div class="bar transfers" [style.height.%]="
+                getBarHeight(
+                  month.transfers,
+                  activityMaximum
+                )
+              ">
+            </div>
+
+          </div>
+
+          <span class="month-label">
+            {{ month.month }}
+          </span>
+
+        </div>
+
+        }
+
+      </div>
+
+    </section>
+
+
+  </main>
 
   }
 
