@@ -20,10 +20,10 @@ export class Sidebar {
   readonly closeRequested = output<void>();
 
   readonly links = input<SidebarLink[]>([
-    { path: '/dashboard',    label: 'Dashboard',    icon: 'images/nav-home.png',         enabled: true },
-    { path: '/profile',      label: 'Profile',      icon: 'images/nav-profile.png',      enabled: false },
-    { path: '/transactions', label: 'Transactions', icon: 'images/nav-transactions.png', enabled: true },
-    { path: '/help',         label: 'Help',         icon: 'images/nav-help.png',         enabled: false },
+    { path: '/dashboard',    label: 'Dashboard',    icon: 'images/casa.png',         enabled: true },
+    { path: '/profile',      label: 'Profile',      icon: 'images/profile.png',      enabled: false },
+    { path: '/transactions', label: 'Transactions', icon: 'images/transaction.png', enabled: true },
+    { path: '/help',         label: 'Help',         icon: 'images/help.png',         enabled: true },
   ]);
 
   readonly initial = computed(() => this.userName().trim().charAt(0).toUpperCase() || '?');

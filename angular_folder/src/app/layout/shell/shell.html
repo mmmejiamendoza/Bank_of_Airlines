@@ -1,13 +1,21 @@
 <div class="shell">
-  <app-navbar [menuOpen]="sidebarOpen()" (menuToggled)="toggleSidebar()" />
-  <div class="shell__body">
-    @if (sidebarOpen()) {
-      <button class="shell__scrim" type="button" aria-label="Close menu" (click)="toggleSidebar()"></button>
-    }
-    <app-sidebar [open]="sidebarOpen()" />
-    <main class="shell__main">
-      <router-outlet />
-    </main>
-  </div>
+  <app-navbar
+  [menuOpen]="sidebarOpen()"
+  [userName]="userName()"
+  [userId]="userId()"
+  (menuToggled)="toggleSidebar()"
+  (logoutRequested)="logout()"
+/>
+
+  @if (sidebarOpen()) {
+    <button class="shell__scrim" type="button" aria-label="Close menu" (click)="closeSidebar()"></button>
+  }
+
+  <app-sidebar [open]="sidebarOpen()" [userName]="userName()" (closeRequested)="closeSidebar()" />
+
+  <main class="shell__main">
+    <router-outlet />
+  </main>
+
   <app-toast />
 </div>

@@ -16,12 +16,27 @@
   </div>
 
   @if (userName()) {
-    <div class="navbar__user">
+  <div class="navbar__user">
+    <button
+      type="button"
+      class="navbar__user-btn"
+      aria-haspopup="menu"
+      [attr.aria-expanded]="userMenuOpen()"
+      (click)="toggleUserMenu()"
+    >
       <span class="navbar__avatar" aria-hidden="true">{{ initial() }}</span>
       <span class="navbar__user-text">
         <strong>{{ userName() }}</strong>
         <small>{{ userId() }}</small>
       </span>
-    </div>
-  }
+      <span class="navbar__caret" aria-hidden="true"></span>
+    </button>
+
+    @if (userMenuOpen()) {
+      <div class="navbar__dropdown" role="menu">
+        <button type="button" role="menuitem" (click)="logout()">Log out</button>
+      </div>
+    }
+  </div>
+}
 </header>
