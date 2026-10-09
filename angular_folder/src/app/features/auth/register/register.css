@@ -1,531 +1,405 @@
 /* =========================================
-   REGISTER PAGE
+   PAGE BACKGROUND
    ========================================= */
 
 .register-page {
   min-height: 100vh;
+  color: #111;
+  font-family: Georgia, "Times New Roman", serif;
 
-  background: #ffffff;
+  background:
+    linear-gradient(to bottom,
+      #1184bb 0px,
+      #1184bb 35px,
+      #f1f5f6 35px,
+      #f1f5f6 75px,
+      #1184bb 75px,
+      #1184bb 113px,
+      transparent 113px),
+    linear-gradient(180deg,
+      #168fc3 0%,
+      #319fce 30%,
+      #75bedc 65%,
+      #dceff6 100%);
 
-  font-family: Arial, Helvetica, sans-serif;
-
-  color: #333333;
-
+  position: relative;
   overflow-x: hidden;
+  padding-bottom: 40px;
+  box-sizing: border-box;
 }
 
-
 /* =========================================
-   TOP HEADER
+   HEADER
    ========================================= */
 
 .top-header {
+  height: 113px;
   position: relative;
-
-  height: 150px;
-
-  background: linear-gradient(to bottom,
-      #168fc3 0%,
-      #168fc3 47%,
-      #ffffff 47%,
-      #ffffff 57%,
-      #168fc3 57%,
-      #168fc3 100%);
-
-  border-bottom: 1px solid #d5d5d5;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.6);
 }
 
-.header-line {
+.header-stripe {
   position: absolute;
-
-  top: 22px;
+  top: 0;
   left: 0;
-
   width: 100%;
-  height: 1px;
-
-  background: rgba(255, 255, 255, 0.35);
+  height: 35px;
+  background: #1184bb;
 }
-
 
 /* =========================================
-   BANK OF AIRLINES BRAND
+   AIRLINE BRAND
    ========================================= */
 
 .brand-mark {
   position: absolute;
-
+  z-index: 2;
   top: 0;
   left: 50%;
-
   transform: translateX(-50%);
 
-  width: 212px;
-  height: 150px;
+  width: 415px;
+  height: 113px;
 
-  background: #ffffff;
+  background: #fff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  box-sizing: border-box;
+}
 
+.brand-name {
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  z-index: 2;
+  color: #465b6e;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 39px;
+  line-height: 0.91;
+  letter-spacing: -1.5px;
+  font-weight: 600;
 }
 
 .brand-symbol {
   position: relative;
-
-  width: 92px;
-  height: 82px;
-
-  margin-top: 12px;
+  width: 105px;
+  height: 95px;
+  flex-shrink: 0;
 }
 
 .wing {
   position: absolute;
-
   display: block;
-
-  border-radius: 100% 0 100% 0;
-
   transform-origin: center;
 }
 
 .wing-blue {
-  width: 78px;
-  height: 18px;
-
-  top: 27px;
-  left: 7px;
-
-  background: #168fc3;
-
-  transform: rotate(-18deg);
+  top: 10px;
+  left: 13px;
+  width: 34px;
+  height: 48px;
+  background: linear-gradient(140deg, #13b9ec, #07509a);
+  border-radius: 0 0 25px 0;
+  transform: skew(27deg);
 }
 
-.wing-purple {
-  width: 70px;
-  height: 18px;
-
-  top: 19px;
-  left: 4px;
-
-  background: #3a24e3;
-
-  transform: rotate(9deg);
+.wing-gray {
+  top: 49px;
+  left: 28px;
+  width: 48px;
+  height: 14px;
+  background: linear-gradient(90deg, #dce4e7, #8297a3);
+  border-radius: 50%;
+  transform: rotate(-5deg);
 }
 
 .wing-red {
-  width: 70px;
-  height: 17px;
-
-  top: 42px;
-  left: 20px;
-
-  background: #e32424;
-
-  transform: rotate(48deg);
+  top: 59px;
+  left: 43px;
+  width: 43px;
+  height: 43px;
+  background: linear-gradient(135deg, #ff3535, #a50000);
+  border-radius: 0 0 0 25px;
+  transform: skew(25deg) rotate(-12deg);
 }
-
-.brand-name {
-  margin-top: 1px;
-
-  color: #314d67;
-
-  font-size: 15px;
-
-  font-weight: 700;
-
-  letter-spacing: 1px;
-
-  white-space: nowrap;
-}
-
 
 /* =========================================
-   SECURE CHECK
+   MAIN LAYOUT
    ========================================= */
 
-.secure-mark {
-  position: absolute;
-
-  right: 28px;
-  top: 11px;
-
-  width: 38px;
-  height: 38px;
-
-  border: 2px solid #ffffff;
-
-  border-radius: 50%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.register-main {
+  width: 100%;
+  padding: 0 24px;
+  box-sizing: border-box;
 }
 
-.secure-mark span {
-  color: #ffffff;
-
-  font-size: 25px;
-
-  line-height: 1;
-
-  font-weight: 300;
-}
-
-
-/* =========================================
-   MAIN CONTENT
-   ========================================= */
-
-.register-content {
-  display: grid;
-
-  grid-template-columns: 37% 63%;
-
-  min-height: calc(100vh - 150px);
-}
-
-
-/* =========================================
-   WELCOME PANEL
-   ========================================= */
-
-.welcome-panel {
+.register-card {
   position: relative;
-
-  min-height: calc(100vh - 150px);
-
-  background: linear-gradient(to bottom,
-      #1594c6 0%,
-      #3da9d0 30%,
-      #78c0dc 62%,
-      #d9eff7 100%);
-
-  border-right: 1px solid #c9d7dc;
+  width: min(100%, 795px);
+  margin: 0 auto;
+  background: #fff;
+  min-height: 800px;
+  padding-bottom: 30px;
+  box-sizing: border-box;
+  box-shadow: 0 10px 30px rgba(15, 67, 94, 0.12);
 }
 
-.welcome-content {
-  padding: 105px 46px;
+.register-card-top {
+  height: 35px;
+  background: #fff;
 }
-
-.welcome-eyebrow {
-  margin: 0 0 20px;
-
-  color: rgba(255, 255, 255, 0.9);
-
-  font-size: 14px;
-
-  font-weight: 700;
-
-  letter-spacing: 2px;
-}
-
-.welcome-content h1 {
-  margin: 0;
-
-  color: #ffffff;
-
-  font-family: Georgia, 'Times New Roman', serif;
-
-  font-size: clamp(43px, 3.6vw, 59px);
-
-  line-height: 0.98;
-
-  font-weight: 700;
-
-  letter-spacing: -1px;
-}
-
-.welcome-message {
-  margin: 52px 0 0;
-
-  color: #ffffff;
-
-  font-family: Georgia, 'Times New Roman', serif;
-
-  font-size: clamp(22px, 1.75vw, 28px);
-
-  line-height: 1.14;
-
-  font-weight: 600;
-}
-
 
 /* =========================================
-   REGISTER PANEL
-   ========================================= */
-
-.register-panel {
-  min-height: calc(100vh - 150px);
-
-  background: #ffffff;
-
-  display: flex;
-
-  justify-content: center;
-
-  padding: 42px 40px 45px;
-}
-
-.register-container {
-  width: min(100%, 590px);
-}
-
-
-/* =========================================
-   REGISTER HEADING
+   TITLE BANNER
    ========================================= */
 
 .register-heading {
-  margin-bottom: 25px;
-}
-
-.section-label {
-  margin: 0 0 7px;
-
-  color: #168fc3;
-
-  font-size: 13px;
-
-  font-weight: 700;
-
-  letter-spacing: 1.4px;
-}
-
-.register-heading h2 {
-  margin: 0;
-
-  color: #333333;
-
-  font-family: Georgia, 'Times New Roman', serif;
-
-  font-size: 32px;
-
-  line-height: 1.05;
-
-  font-weight: 700;
-}
-
-.heading-description {
-  margin: 9px 0 0;
-
-  color: #666666;
-
-  font-size: 14px;
-
-  line-height: 1.4;
-}
-
-
-/* =========================================
-   ERROR MESSAGE
-   ========================================= */
-
-.error-message {
-  display: flex;
-
-  align-items: center;
-
-  gap: 10px;
-
   width: 100%;
+  min-height: 61px;
+  background: #a2cfe3;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 
   box-sizing: border-box;
-
-  margin: 0 0 20px;
-
-  padding: 11px 14px;
-
-  border-left: 4px solid #e32424;
-
-  background: #fce9e9;
-
-  color: #a71919;
-
-  font-size: 14px;
-
-  font-weight: 600;
+  padding: 10px 16px;
 }
 
-.error-icon {
-  display: inline-flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  flex-shrink: 0;
-
-  width: 21px;
-  height: 21px;
-
-  border-radius: 50%;
-
-  background: #e32424;
-
-  color: #ffffff;
-
-  font-size: 13px;
-
+.register-heading h1 {
+  margin: 0;
+  color: #050505;
+  font-size: 35px;
+  line-height: 1.15;
   font-weight: 700;
 }
 
-
 /* =========================================
-   FORM
+   FORM CONTAINER
    ========================================= */
 
-.register-form {
-  width: 100%;
-}
-
-.name-row {
-  display: grid;
-
-  grid-template-columns: 1fr 1fr;
-
-  gap: 20px;
+.register-container {
+  width: min(100% - 64px, 542px);
+  margin: 30px auto 0;
 }
 
 .form-group {
-  margin-bottom: 19px;
+  margin-bottom: 17px;
 }
 
 .form-group label {
   display: block;
-
   margin-bottom: 7px;
 
-  color: #4b4b4b;
-
-  font-size: 16px;
-
+  color: #171717;
+  font-size: 22px;
+  line-height: 1.25;
   font-weight: 400;
 }
 
 .form-group label span {
   color: #e32424;
-
-  font-weight: 700;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .form-group input {
-  box-sizing: border-box;
-
+  display: block;
   width: 100%;
+  height: 51px;
+  padding: 0 18px;
 
-  height: 54px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 10px;
 
-  border: 1px solid #d0d0d0;
-
-  border-radius: 5px;
-
-  background: #d1d1d1;
-
-  padding: 0 15px;
-
-  color: #222222;
-
-  font-size: 16px;
+  background: #cecece;
+  color: #171717;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
 
   outline: none;
-
   transition:
-    background 0.15s ease,
-    border 0.15s ease,
-    box-shadow 0.15s ease;
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+.form-group input::placeholder {
+  color: #777;
+  opacity: 1;
 }
 
 .form-group input:focus {
-  background: #e2e2e2;
-
+  background: #f5f8fa;
   border-color: #168fc3;
-
-  box-shadow:
-    0 0 0 2px rgba(22, 143, 195, 0.12);
+  box-shadow: 0 0 0 3px rgba(22, 143, 195, 0.13);
 }
 
+.form-group small {
+  display: block;
+  margin-top: 5px;
+  color: #555;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.form-group small.field-error {
+  color: #e32424;
+}
+
+/* =========================================
+   ERROR BANNER
+   ========================================= */
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 0 17px;
+  padding: 10px 13px;
+
+  background: #ffd8d8;
+  border-left: 7px solid #ff2020;
+  border-radius: 10px;
+
+  color: #222;
+  font-size: 14px;
+}
+
+.error-message strong {
+  display: block;
+  margin-bottom: 2px;
+  font-weight: 400;
+}
+
+.error-message p {
+  margin: 0;
+  line-height: 1.35;
+}
+
+.error-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 27px;
+  height: 27px;
+
+  border: 1px solid #ff2020;
+  border-radius: 50%;
+  color: #ff2020;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 18px;
+}
+
+/* =========================================
+   TERMS
+   ========================================= */
+
+.terms-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 21px 0 11px;
+}
+
+.terms-checkbox {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border: 2px solid #ff2929;
+  box-sizing: border-box;
+}
+
+.terms-row p {
+  margin: 3px 0 0;
+  color: #333;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.terms-row a {
+  color: #168fc3;
+  text-decoration: none;
+}
+
+.terms-row a:hover {
+  color: #e32424;
+  text-decoration: underline;
+}
 
 /* =========================================
    CREATE ACCOUNT BUTTON
    ========================================= */
 
-.register-button-wrapper {
-  display: flex;
-
-  justify-content: center;
-
-  margin-top: 14px;
-}
-
 .register-button {
-  min-width: 215px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
 
-  height: 58px;
+  width: min(100%, 375px);
+  min-height: 45px;
+  margin: 0 auto;
 
-  padding: 0 26px;
+  padding: 8px 20px;
+  box-sizing: border-box;
 
   border: none;
+  border-radius: 30px;
 
-  border-radius: 5px;
+  background: #1087c0;
+  color: #fff;
 
-  background: linear-gradient(90deg,
-      #168fc3 0%,
-      #168fc3 45%,
-      #e32424 100%);
-
-  color: #ffffff;
-
-  font-family: Georgia, 'Times New Roman', serif;
-
-  font-size: 20px;
-
-  font-weight: 700;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
 
   cursor: pointer;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  gap: 9px;
-
   transition:
-    transform 0.15s ease,
-    opacity 0.15s ease;
+    background 0.18s ease,
+    transform 0.18s ease,
+    opacity 0.18s ease;
 }
 
 .register-button:hover:not(:disabled) {
+  background: linear-gradient(90deg, #1087c0, #e32424);
   transform: translateY(-1px);
-
-  opacity: 0.95;
 }
 
 .register-button:disabled {
+  opacity: 0.7;
   cursor: not-allowed;
-
-  opacity: 0.75;
 }
 
-
-/* =========================================
-   BUTTON SPINNER
-   ========================================= */
+.button-user-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  font-size: 20px;
+  line-height: 1;
+}
 
 .button-spinner {
   width: 17px;
   height: 17px;
-
   border: 2px solid rgba(255, 255, 255, 0.45);
-
-  border-top-color: #ffffff;
-
+  border-top-color: #fff;
   border-radius: 50%;
-
   animation: spin 0.7s linear infinite;
 }
 
@@ -535,268 +409,303 @@
   }
 }
 
-
 /* =========================================
    LOGIN LINK
    ========================================= */
 
 .login-link-section {
   display: flex;
-
   align-items: center;
-
   justify-content: center;
+  gap: 6px;
 
-  gap: 5px;
-
-  margin-top: 24px;
-
-  color: #555555;
-
-  font-size: 14px;
+  margin-top: 19px;
+  color: #555;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
 }
 
 .login-link-section button {
-  border: none;
-
-  background: transparent;
-
   padding: 0;
-
-  color: #0085c3;
-
-  font-size: 14px;
-
+  border: none;
+  background: transparent;
+  color: #168fc3;
+  font: inherit;
   font-weight: 700;
-
   cursor: pointer;
 }
 
 .login-link-section button:hover {
+  color: #e32424;
   text-decoration: underline;
 }
 
-
 /* =========================================
-   REGISTRATION NOTE
-   ========================================= */
-
-.registration-note {
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  gap: 7px;
-
-  margin-top: 22px;
-
-  color: #777777;
-
-  font-size: 12px;
-}
-
-.note-icon {
-  display: inline-flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  width: 17px;
-  height: 17px;
-
-  border: 1px solid #168fc3;
-
-  border-radius: 50%;
-
-  color: #168fc3;
-
-  font-size: 10px;
-
-  font-weight: 700;
-}
-
-
-/* =========================================
-   TABLET
-   ========================================= */
-
-@media (max-width: 900px) {
-
-  .register-content {
-    grid-template-columns: 40% 60%;
-  }
-
-  .welcome-content {
-    padding: 80px 30px;
-  }
-
-  .welcome-content h1 {
-    font-size: 43px;
-  }
-
-  .welcome-message {
-    font-size: 22px;
-
-    margin-top: 38px;
-  }
-
-  .register-panel {
-    padding: 40px 28px 40px;
-  }
-}
-
-
-/* =========================================
-   MOBILE
+   RESPONSIVE
    ========================================= */
 
 @media (max-width: 700px) {
+  .register-page {
+    background:
+      linear-gradient(to bottom,
+        #1184bb 0 28px,
+        #f1f5f6 28px 55px,
+        #1184bb 55px 83px,
+        transparent 83px),
+      linear-gradient(180deg,
+        #168fc3,
+        #78c0dc 65%,
+        #dceff6);
+  }
 
   .top-header {
-    height: 105px;
+    height: 100px;
   }
 
   .brand-mark {
-    width: 170px;
-    height: 105px;
+    width: 285px;
+    height: 100px;
+    gap: 8px;
+  }
+
+  .brand-name {
+    font-size: 29px;
   }
 
   .brand-symbol {
-    transform: scale(0.72);
-
-    transform-origin: center top;
-
-    margin-top: 5px;
+    transform: scale(0.75);
+    transform-origin: center;
+    width: 80px;
   }
 
-  .brand-name {
-    margin-top: -18px;
-
-    font-size: 11px;
-
-    letter-spacing: 0.7px;
+  .register-main {
+    padding: 0 12px;
   }
 
-  .secure-mark {
-    right: 15px;
-    top: 10px;
-
-    width: 30px;
-    height: 30px;
+  .register-card {
+    min-height: 0;
+    padding-bottom: 28px;
   }
 
-  .secure-mark span {
-    font-size: 19px;
+  .register-card-top {
+    height: 20px;
   }
 
-
-  .register-content {
-    display: block;
-
-    min-height: auto;
+  .register-heading {
+    min-height: 55px;
   }
 
-
-  .welcome-panel {
-    min-height: 245px;
-
-    border-right: none;
-
-    border-bottom: 1px solid #c9d7dc;
-  }
-
-  .welcome-content {
-    padding: 40px 30px;
-  }
-
-  .welcome-content h1 {
-    font-size: 40px;
-  }
-
-  .welcome-message {
-    margin-top: 25px;
-
-    font-size: 21px;
-  }
-
-
-  .register-panel {
-    min-height: auto;
-
-    padding: 42px 22px 50px;
+  .register-heading h1 {
+    font-size: 27px;
   }
 
   .register-container {
-    width: 100%;
+    width: calc(100% - 36px);
+    margin-top: 24px;
   }
 
-  .register-heading h2 {
-    font-size: 28px;
-  }
-
-  .name-row {
-    grid-template-columns: 1fr;
-
-    gap: 0;
-  }
-
-  .form-group input {
-    height: 58px;
-  }
-}
-
-
-/* =========================================
-   SMALL PHONES
-   ========================================= */
-
-@media (max-width: 430px) {
-
-  .brand-mark {
-    width: 155px;
-  }
-
-  .brand-name {
-    font-size: 10px;
-  }
-
-  .welcome-panel {
-    min-height: 225px;
-  }
-
-  .welcome-content {
-    padding: 36px 24px;
-  }
-
-  .welcome-eyebrow {
-    font-size: 11px;
-
-    margin-bottom: 15px;
-  }
-
-  .welcome-content h1 {
-    font-size: 35px;
-  }
-
-  .welcome-message {
+  .form-group label {
     font-size: 19px;
   }
 
-  .register-panel {
-    padding-left: 18px;
-    padding-right: 18px;
+  .form-group input {
+    height: 48px;
+    font-size: 15px;
   }
 
-  .register-heading h2 {
-    font-size: 25px;
+  .terms-row p {
+    font-size: 12px;
   }
 
   .register-button {
-    width: 100%;
-
-    font-size: 18px;
+    font-size: 16px;
   }
+}
+
+@media (max-width: 380px) {
+  .brand-mark {
+    width: 250px;
+  }
+
+  .brand-name {
+    font-size: 25px;
+  }
+
+  .brand-symbol {
+    transform: scale(0.65);
+    width: 65px;
+  }
+
+  .register-heading h1 {
+    font-size: 24px;
+  }
+
+  .register-container {
+    width: calc(100% - 28px);
+  }
+}
+/* Fine-tune registration layout to match the reference */
+
+.register-card {
+  padding-bottom: 20px;
+}
+
+.register-container {
+  margin-top: 24px;
+}
+
+.form-group {
+  margin-bottom: 13px;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  height: 48px;
+}
+
+.form-group small {
+  margin-top: 3px;
+  font-size: 12px;
+}
+
+.terms-row {
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.register-button {
+  min-height: 43px;
+}
+
+.login-link-section {
+  margin-top: 14px;
+}
+/* Clickable terms checkbox */
+
+.terms-checkbox-label {
+  display: inline-flex;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.terms-checkbox-label input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.terms-checkbox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 2px solid #e32424;
+  background: #fff;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.terms-checkbox-label input:checked+.terms-checkbox {
+  background: #168fc3;
+  border-color: #168fc3;
+}
+
+.terms-checkbox-label input:checked+.terms-checkbox::after {
+  content: "✓";
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.terms-checkbox-label input:focus-visible+.terms-checkbox {
+  outline: 3px solid rgba(22, 143, 195, 0.3);
+  outline-offset: 2px;
+}
+
+.terms-row p a {
+  color: #168fc3;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.required-text {
+  color: #e32424;
+}
+
+.terms-error {
+  margin: 6px 0 12px;
+  color: #e32424;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* Terms and Privacy popup */
+
+.policy-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.48);
+}
+
+.policy-modal {
+  position: relative;
+  width: min(100%, 480px);
+  padding: 30px;
+  box-sizing: border-box;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.policy-modal h2 {
+  margin: 0 35px 16px 0;
+  color: #168fc3;
+  font-size: 24px;
+}
+
+.policy-modal p {
+  color: #444;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.policy-close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  border: none;
+  background: transparent;
+  color: #555;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.policy-done {
+  display: block;
+  margin: 20px 0 0 auto;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 24px;
+  background: #168fc3;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.policy-done:hover {
+  background: #3a24e3;
 }

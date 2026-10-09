@@ -1,86 +1,153 @@
-<div class="auth-page">
-  <div class="auth-card">
+<div class="register-page">
+  <header class="top-header">
+    <div class="header-stripe"></div>
 
-    <div class="auth-logo">
-      <div class="logo-mark">
-        <span class="logo-blue"></span>
-        <span class="logo-purple"></span>
-        <span class="logo-red"></span>
+    <div class="brand-mark">
+      <div class="brand-name">
+        <span>American</span>
+        <span>Airlines</span>
       </div>
 
-      <h1>BANK OF AIRLINES</h1>
+      <div class="brand-symbol">
+        <span class="wing wing-blue"></span>
+        <span class="wing wing-gray"></span>
+        <span class="wing wing-red"></span>
+      </div>
     </div>
+  </header>
 
-    <div class="auth-heading">
-      <h2>Create an account</h2>
-      <p>Register to get started with Bank of Airlines.</p>
-    </div>
+  <main class="register-main">
+    <section class="register-card">
+      <div class="register-card-top"></div>
 
-    @if (errorMessage) {
-    <div class="error-message" role="alert">
-      {{ errorMessage }}
-    </div>
-    }
+      <div class="register-heading">
+        <h1>Create Your Account</h1>
+      </div>
 
-    <form (ngSubmit)="onRegister()">
-
-      <div class="form-row">
-
-        <div class="form-group">
-          <label for="firstName">First Name</label>
-          <input id="firstName" type="text" name="firstName" [(ngModel)]="firstName" placeholder="Enter your first name"
-            autocomplete="given-name" />
+      <div class="register-container">
+        @if (errorMessage) {
+        <div class="error-message" role="alert">
+          <span class="error-icon">!</span>
+          <div>
+            <strong>Review highlighted fields:</strong>
+            <p>{{ errorMessage }}</p>
+          </div>
         </div>
-
-        <div class="form-group">
-          <label for="lastName">Last Name</label>
-          <input id="lastName" type="text" name="lastName" [(ngModel)]="lastName" placeholder="Enter your last name"
-            autocomplete="family-name" />
-        </div>
-
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input id="email" type="email" name="email" [(ngModel)]="email" placeholder="Enter your email"
-          autocomplete="email" />
-      </div>
-
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input id="password" type="password" name="password" [(ngModel)]="password" placeholder="Create a password"
-          autocomplete="new-password" />
-
-        <small class="password-hint">
-          Must contain at least 4 characters, 1 uppercase letter,
-          1 lowercase letter, and 1 special character.
-        </small>
-      </div>
-
-      <div class="form-group">
-        <label for="confirmPassword">Confirm Password</label>
-        <input id="confirmPassword" type="password" name="confirmPassword" [(ngModel)]="confirmPassword"
-          placeholder="Confirm your password" autocomplete="new-password" />
-      </div>
-
-      <button type="submit" class="auth-button" [disabled]="isLoading">
-        @if (isLoading) {
-        <span class="button-spinner"></span>
-        Creating account...
-        } @else {
-        Create Account
         }
-      </button>
 
-    </form>
+        <form (ngSubmit)="onRegister()">
+          <div class="form-group">
+            <label for="firstName">First Name <span>*</span></label>
+            <input id="firstName" type="text" name="firstName" [(ngModel)]="firstName"
+              placeholder="Enter your first name" autocomplete="given-name" required />
+          </div>
 
-    <div class="auth-footer">
-      <span>Already have an account?</span>
+          <div class="form-group">
+            <label for="lastName">Last Name <span>*</span></label>
+            <input id="lastName" type="text" name="lastName" [(ngModel)]="lastName" placeholder="Enter your last name"
+              autocomplete="family-name" required />
+          </div>
 
-      <button type="button" class="auth-link" (click)="goToLogin()">
-        Log in
-      </button>
-    </div>
+          <div class="form-group">
+            <label for="email">Enter Email Address <span>*</span></label>
+            <input id="email" type="email" name="email" [(ngModel)]="email" placeholder="Enter your email address"
+              autocomplete="email" required />
+          </div>
 
-  </div>
+          <div class="form-group">
+            <label for="password">Password <span>*</span></label>
+            <input id="password" type="password" name="password" [(ngModel)]="password" placeholder="Create a password"
+              autocomplete="new-password" required />
+            <small>
+              At least 4 characters, with an uppercase letter, a lowercase
+              letter, and a special character.
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">
+              Confirm Password <span>*</span>
+            </label>
+            <input id="confirmPassword" type="password" name="confirmPassword" [(ngModel)]="confirmPassword"
+              placeholder="Confirm your password" autocomplete="new-password" required />
+            @if (confirmPassword && password !== confirmPassword) {
+            <small class="field-error">Passwords do not match.</small>
+            }
+          </div>
+
+      <div class="terms-row">
+        <label class="terms-checkbox-label">
+          <input type="checkbox" name="termsAccepted" [(ngModel)]="termsAccepted"
+            aria-label="Agree to Terms and Conditions and Privacy Policy" />
+          <span class="terms-checkbox"></span>
+        </label>
+
+        <p>
+          I agree to the
+          <a href="#" (click)="openTerms($event)">Terms and Conditions</a>
+          and
+          <a href="#" (click)="openPrivacy($event)">Privacy Policy</a>
+        </p>
+      </div>
+
+      @if (termsError) {
+      <p class="terms-error" role="alert">
+        Please accept the Terms and Conditions and Privacy Policy before creating
+        your account.
+      </p>
+      }
+
+      @if (activePolicy) {
+      <div class="policy-overlay" (click)="closePolicy()">
+        <section class="policy-modal" role="dialog" aria-modal="true"
+          [attr.aria-label]="activePolicy === 'terms' ? 'Terms and Conditions' : 'Privacy Policy'"
+          (click)="$event.stopPropagation()">
+          <button type="button" class="policy-close" aria-label="Close" (click)="closePolicy()">×</button>
+
+          @if (activePolicy === 'terms') {
+          <h2>Terms and Conditions</h2>
+          <p>
+            By creating a Bank of Airlines account, you agree to use this
+            demonstration banking application responsibly and to provide accurate
+            registration information.
+          </p>
+          <p>
+            This project is a frontend demonstration. It does not provide real
+            banking services or process real financial transactions.
+          </p>
+          } @else {
+          <h2>Privacy Policy</h2>
+          <p>
+            The Bank of Airlines demonstration uses the information you enter
+            to simulate account registration and login.
+          </p>
+          <p>
+            This is a student demonstration application, not a production banking
+            service. Do not enter real passwords or sensitive financial information.
+          </p>
+          }
+
+          <button type="button" class="policy-done" (click)="closePolicy()">Close</button>
+        </section>
+      </div>
+      }
+
+          <button type="submit" class="register-button" [disabled]="isLoading">
+            @if (isLoading) {
+            <span class="button-spinner"></span>
+            Creating Account...
+            } @else {
+            <span class="button-user-icon">♙</span>
+            Create Account
+            }
+          </button>
+        </form>
+
+        <div class="login-link-section">
+          <span>Already have an account?</span>
+          <button type="button" (click)="goToLogin()">Log in</button>
+        </div>
+      </div>
+    </section>
+  </main>
 </div>

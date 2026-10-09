@@ -24,10 +24,16 @@ export class Register {
   errorMessage = '';
   isLoading = false;
 
+  // Terms and policy state
+  termsAccepted = false;
+  termsError = false;
+  activePolicy: 'terms' | 'privacy' | null = null;
+
   onRegister(): void {
     this.errorMessage = '';
+    this.termsError = false;
 
-    // Check each required field individually
+    // Check required fields individually
     if (!this.firstName.trim()) {
       this.errorMessage = 'First name is required.';
       return;
@@ -50,6 +56,12 @@ export class Register {
 
     if (!this.confirmPassword) {
       this.errorMessage = 'Please confirm your password.';
+      return;
+    }
+
+    // Require acceptance of the terms
+    if (!this.termsAccepted) {
+      this.termsError = true;
       return;
     }
 
@@ -100,6 +112,7 @@ export class Register {
       return;
     }
 
+    // Simulate a server request
     this.isLoading = true;
 
     setTimeout(() => {
@@ -120,9 +133,23 @@ export class Register {
 
       this.isLoading = false;
 
-      // Registration succeeds → return to Login
+      // Successful registration returns the user to Login
       this.router.navigate(['/login']);
     }, 700);
+  }
+
+  openTerms(event: Event): void {
+    event.preventDefault();
+    this.activePolicy = 'terms';
+  }
+
+  openPrivacy(event: Event): void {
+    event.preventDefault();
+    this.activePolicy = 'privacy';
+  }
+
+  closePolicy(): void {
+    this.activePolicy = null;
   }
 
   goToLogin(): void {
