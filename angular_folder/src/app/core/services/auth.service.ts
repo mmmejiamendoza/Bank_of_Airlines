@@ -211,16 +211,23 @@ export class AuthService {
     return this.users.find((user) => user.id === userId);
   }
 
+
   private generateUserId(
     firstName: string,
     lastName: string
   ): string {
-
-    const nextNumber = 1001 + this.users.length;
-
     const firstInitial = firstName.charAt(0).toUpperCase();
     const lastInitial = lastName.charAt(0).toUpperCase();
 
-    return `${firstInitial}${lastInitial}${nextNumber}`;
+    // Find the highest four-digit ID sequence already used.
+    const existingNumbers = this.users
+      .map((user) => user.id.match(/^[A-Z]{2}(\d{4})$/))
+      .filter((match): match is RegExpMatchArray => match !== null)
+      .map((match) => Number(match[1]));
+
+    const nextNumber = Math.max(0, ...existingNumbers) + 1;
+    const sequence = String(nextNumber).padStart(4, '0');
+
+    return `${firstInitial}${lastInitial}${sequence}`;
   }
 }
