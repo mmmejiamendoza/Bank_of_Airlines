@@ -1,5 +1,4 @@
-
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -21,6 +20,8 @@ export class Register {
   email = '';
   password = '';
   confirmPassword = '';
+  showPassword = signal(false);
+  showConfirmPassword = signal(false);
 
   errorMessage = '';
   isLoading = false;

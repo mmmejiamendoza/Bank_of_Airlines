@@ -58,3 +58,34 @@ body {
     var(--red) 100%
   ) fixed;
 }
+
+/* =========================================
+   SHOW / HIDE PASSWORD TOGGLE
+   ========================================= */
+.password-field {
+  position: relative;
+}
+
+.password-field > input {
+  width: 100%;
+  padding-right: 3rem !important;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+.password-toggle:hover { color: var(--blue-deep); background: rgba(0, 0, 0, 0.06); }
+.password-toggle:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
