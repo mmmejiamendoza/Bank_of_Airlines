@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   User,
   LoginRequest,
@@ -6,15 +6,16 @@ import {
   AuthResponse,
   ApiResponse
 } from '../models';
-
 import users from '../mock/users.json';
 import credentials from '../mock/credentials.json';
+import { CurrentUserService } from './current.user.services';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
+  private currentUserService = inject(CurrentUserService);
   private users: User[] = users;
 
   private credentials: {
@@ -55,6 +56,7 @@ export class AuthService {
     }
 
     this.currentUser = user;
+    this.currentUserService.setUser(user);
 
     // Save the logged-in user in the browser for route protection.
     if (typeof window !== 'undefined') {
@@ -130,6 +132,7 @@ export class AuthService {
 
   logout(): void {
     this.currentUser = null;
+    this.currentUserService.setUser(null); 
 
     if (typeof window !== 'undefined') {
       localStorage.removeItem('currentUser');

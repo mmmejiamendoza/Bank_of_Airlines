@@ -4,6 +4,7 @@ import { Navbar } from '../navbar/navbar';
 import { Sidebar } from '../sidebar/sidebar';
 import { Toast } from '../../shared/ui/toast/toast';
 import { CurrentUserService } from '../../core/services/current.user.services';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-shell',
@@ -13,6 +14,7 @@ import { CurrentUserService } from '../../core/services/current.user.services';
 })
 export class Shell {
   private currentUser = inject(CurrentUserService);
+  private authService = inject(AuthService);
   private router = inject(Router);
   
   readonly sidebarOpen = signal(false);
@@ -20,6 +22,7 @@ export class Shell {
   logout(): void {
     this.closeSidebar();
     this.currentUser.setUser(null);
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 

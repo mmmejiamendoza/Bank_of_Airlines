@@ -2,7 +2,7 @@ import { computed, inject, Injectable, PLATFORM_ID, signal } from '@angular/core
 import { isPlatformBrowser } from '@angular/common';
 import { User } from '../models';
 
-const USER_KEY = 'bank-of-airlines-current-user-v1';
+const USER_KEY = 'currentUser'; // same key AuthService uses
 
 @Injectable({ providedIn: 'root' })
 export class CurrentUserService {
@@ -20,17 +20,17 @@ export class CurrentUserService {
     this.current.set(user);
     if (!this.isBrowser) return;
     try {
-      if (user) sessionStorage.setItem(USER_KEY, JSON.stringify(user));
-      else sessionStorage.removeItem(USER_KEY);
+      if (user) localStorage.setItem(USER_KEY, JSON.stringify(user));
+      else localStorage.removeItem(USER_KEY);
     } catch {
       /* storage unavailable: keep going in memory */
     }
   }
 
   private restore(): User | null {
-    if (!this.isBrowser) return null; // the server has no sessionStorage
+    if (!this.isBrowser) return null; // the server has no browser storage
     try {
-      const raw = sessionStorage.getItem(USER_KEY);
+      const raw = localStorage.getItem(USER_KEY);
       return raw ? (JSON.parse(raw) as User) : null;
     } catch {
       return null;
