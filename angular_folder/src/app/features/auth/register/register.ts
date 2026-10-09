@@ -1,3 +1,4 @@
+
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -29,11 +30,14 @@ export class Register {
   termsError = false;
   activePolicy: 'terms' | 'privacy' | null = null;
 
+  // Username success popup
+  createdUserId = '';
+  showUsernamePopup = false;
+
   onRegister(): void {
     this.errorMessage = '';
     this.termsError = false;
 
-    // Check required fields individually
     if (!this.firstName.trim()) {
       this.errorMessage = 'First name is required.';
       return;
@@ -59,13 +63,11 @@ export class Register {
       return;
     }
 
-    // Require acceptance of the terms
     if (!this.termsAccepted) {
       this.termsError = true;
       return;
     }
 
-    // Names can only contain letters
     if (!this.isValidName(this.firstName.trim())) {
       this.errorMessage = 'First name can only contain letters.';
       return;
@@ -76,13 +78,11 @@ export class Register {
       return;
     }
 
-    // Email validation
     if (!this.isValidEmail(this.email.trim())) {
       this.errorMessage = 'Please enter a valid email address.';
       return;
     }
 
-    // Password requirements
     if (this.password.length < 4) {
       this.errorMessage = 'Password must be at least 4 characters.';
       return;
@@ -106,7 +106,6 @@ export class Register {
       return;
     }
 
-    // Confirm password
     if (this.password !== this.confirmPassword) {
       this.errorMessage = 'Passwords do not match.';
       return;
@@ -131,11 +130,27 @@ export class Register {
         return;
       }
 
-      this.isLoading = false;
+      // Make sure the response includes the new user
+      if (!response.data) {
+        this.isLoading = false;
+        this.errorMessage =
+          'Account was created, but the username could not be retrieved.';
+        this.cdr.detectChanges();
+        return;
+      }
 
-      // Successful registration returns the user to Login
-      this.router.navigate(['/login']);
+      // Display the generated username
+      this.isLoading = false;
+      this.createdUserId = response.data.id;
+      this.showUsernamePopup = true;
+      this.cdr.detectChanges();
     }, 700);
+  }
+
+  // Close the success popup and continue to Login
+  continueToLogin(): void {
+    this.showUsernamePopup = false;
+    this.router.navigate(['/login']);
   }
 
   openTerms(event: Event): void {

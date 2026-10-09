@@ -151,3 +151,25 @@
     </section>
   </main>
 </div>
+@if (showUsernamePopup) {
+<div class="username-overlay">
+  <section class="username-popup" role="dialog" aria-modal="true" aria-labelledby="username-popup-title">
+    <button type="button" class="username-popup-close" aria-label="Close and continue to login"
+      (click)="continueToLogin()">
+      ×
+    </button>
+
+    <p id="username-popup-title">Your username is:</p>
+
+    <h2>{{ createdUserId }}!</h2>
+
+    <p class="username-popup-hint">
+      Save this username so you can log in to your account.
+    </p>
+
+    <button type="button" class="username-popup-button" (click)="continueToLogin()">
+      Continue to Login
+    </button>
+  </section>
+</div>
+}
