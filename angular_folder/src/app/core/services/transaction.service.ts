@@ -36,14 +36,28 @@ export class TransactionService {
     }
 
     getAccountByUserId(userId: string): Observable<ApiResponse<Account>> {
-        return this.load().pipe(
-            map(() => {
-                // CHANGED: case-insensitive, since the contract says user ids are case-insensitive
-                const account = this.accounts.find((a) => a.userId.toLowerCase() === userId.toLowerCase());
-                return account ? this.ok({ ...account }) : this.fail<Account>('ACCOUNT_NOT_FOUND', 'Account not found.');
-            }),
-        );
-    }
+    return this.load().pipe(
+        map(() => {
+            const mine = this.accounts.filter((a) => a.userId.toLowerCase() === userId.toLowerCase());
+            const account = mine.find((a) => a.type !== 'SAVINGS') ?? mine[0];
+            return account ? this.ok({ ...account }) : this.fail<Account>('ACCOUNT_NOT_FOUND', 'Account not found.');
+        }),
+    );
+}
+
+// NEW: every account a user owns (the dashboard shows checking and savings)
+getAccountsByUserId(userId: string): Observable<ApiResponse<Account[]>> {
+    return this.load().pipe(
+        map(() =>
+            this.ok(
+                this.accounts
+                    .filter((a) => a.userId.toLowerCase() === userId.toLowerCase())
+                    .map((a) => ({ ...a })),
+            ),
+        ),
+        delay(FAKE_DELAY_MS),
+    );
+}
 
     getTransactions(accountId: string): Observable<ApiResponse<Transaction[]>> {
         return this.load().pipe(

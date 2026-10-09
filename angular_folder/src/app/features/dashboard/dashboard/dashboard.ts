@@ -13,7 +13,6 @@ import {
 import { Router, RouterLink } from '@angular/router';
 
 import { AuthService } from '../../../core/services/auth.service';
-import { AccountService } from '../../../core/services/account.service';
 import { TransactionService } from '../../../core/services/transaction.service';
 
 import {
@@ -35,7 +34,6 @@ import {
 export class Dashboard implements OnInit {
 
   private authService = inject(AuthService);
-  private accountService = inject(AccountService);
   private transactionService = inject(TransactionService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
@@ -122,17 +120,7 @@ export class Dashboard implements OnInit {
   // =========================================
 
   ngOnInit(): void {
-
-    setTimeout(() => {
-
-      this.loadDashboard();
-
-      this.isLoading = false;
-
-      this.cdr.detectChanges();
-
-    }, 700);
-
+    this.loadDashboard();
   }
 
 
@@ -142,36 +130,65 @@ export class Dashboard implements OnInit {
       this.authService.getCurrentUser();
 
     if (!this.currentUser) {
+      this.isLoading = false;
       return;
     }
 
-    this.account =
-      this.accountService.getAccountByUserId(
-        this.currentUser.id
-      );
+    const user = this.currentUser;
 
-    this.checkingAccount = this.account;
+    this.transactionService.getAccountsByUserId(user.id).subscribe((response) => {
 
-    this.savingsAccount = null;
+      const accounts = response.data ?? [];
 
+      // brand-new user with no account yet: open a $0 checking account, then reload
+      if (accounts.length === 0) {
+        this.transactionService
+          .createAccount(user.id)
+          .subscribe(() => this.loadDashboard());
+        return;
+      }
 
-    if (this.checkingAccount) {
+      this.checkingAccount =
+        accounts.find((a) => a.type !== 'SAVINGS') ?? null;
 
-      this.transactionService.getTransactions(this.checkingAccount.id).subscribe({
-        next: (response: any) => {
-          const transactions = Array.isArray(response) ? response : (response?.data || []);
-          
-          this.checkingTransactions = transactions;
-          this.recentTransactions = transactions.slice(0, 5);
-          
-          this.cdr.detectChanges();
-        },
-        error: (err) => console.error('Error loading transactions:', err)
+      this.savingsAccount =
+        accounts.find((a) => a.type === 'SAVINGS') ?? null;
+
+      this.account = this.checkingAccount;
+
+      this.loadTransactionsFor(this.checkingAccount, (list) => {
+        this.checkingTransactions = list;
+        this.recentTransactions = list.slice(0, 5);
       });
 
+      this.loadTransactionsFor(this.savingsAccount, (list) => {
+        this.savingsTransactions = list;
+      });
+
+      this.isLoading = false;
+      this.cdr.detectChanges();
+
+    });
+
+  }
+
+
+  private loadTransactionsFor(
+    account: Account | null,
+    assign: (list: Transaction[]) => void
+  ): void {
+
+    if (!account) {
+      return;
     }
 
-    this.savingsTransactions = [];
+    this.transactionService.getTransactions(account.id).subscribe((response) => {
+
+      assign(response.data ?? []);
+
+      this.cdr.detectChanges();
+
+    });
 
   }
 
