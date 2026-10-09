@@ -21,7 +21,7 @@ export class Sidebar {
 
   readonly links = input<SidebarLink[]>([
     { path: '/dashboard',    label: 'Dashboard',    icon: 'images/casa.png',         enabled: true },
-    { path: '/profile',      label: 'Profile',      icon: 'images/profile.png',      enabled: false },
+    { path: '/profile',      label: 'Profile',      icon: 'images/profile.png',      enabled: true },
     { path: '/transactions', label: 'Transactions', icon: 'images/transaction.png', enabled: true },
     { path: '/help',         label: 'Help',         icon: 'images/help.png',         enabled: true },
   ]);

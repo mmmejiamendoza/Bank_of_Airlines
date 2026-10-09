@@ -3,6 +3,7 @@ import {
   User,
   LoginRequest,
   RegisterRequest,
+  UpdateProfileRequest,   // NEW
   AuthResponse,
   ApiResponse
 } from '../models';
@@ -113,6 +114,73 @@ export class AuthService {
     };
   }
 
+  // NEW: used by the profile page
+  updateProfile(userId: string, changes: UpdateProfileRequest): ApiResponse<User> {
+
+    const index = this.users.findIndex((user) => user.id === userId);
+
+    if (index === -1) {
+      return {
+        success: false,
+        error: {
+          code: 'UNAUTHORIZED',
+          message: 'User could not be found.'
+        }
+      };
+    }
+
+    const firstName = changes.firstName.trim();
+    const lastName = changes.lastName.trim();
+    const email = changes.email.trim();
+
+    if (!firstName || !lastName || !email) {
+      return {
+        success: false,
+        error: {
+          code: 'VALIDATION_ERROR',
+          message: 'First name, last name and email are required.'
+        }
+      };
+    }
+
+    const emailTaken = this.users.some(
+      (user) =>
+        user.id !== userId &&
+        user.email.toLowerCase() === email.toLowerCase()
+    );
+
+    if (emailTaken) {
+      return {
+        success: false,
+        error: {
+          code: 'EMAIL_ALREADY_TAKEN',
+          message: 'An account with this email already exists.'
+        }
+      };
+    }
+
+    const updated: User = {
+      ...this.users[index],
+      firstName,
+      lastName,
+      email,
+      ...(changes.gender ? { gender: changes.gender } : {})
+    };
+
+    this.users[index] = updated;
+    this.currentUser = updated;
+    this.currentUserService.setUser(updated); // navbar and welcome cards update immediately
+
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('currentUser', JSON.stringify(updated));
+    }
+
+    return {
+      success: true,
+      data: updated
+    };
+  }
+
   getCurrentUser(): User | null {
 
     if (this.currentUser) {
@@ -132,7 +200,7 @@ export class AuthService {
 
   logout(): void {
     this.currentUser = null;
-    this.currentUserService.setUser(null); 
+    this.currentUserService.setUser(null);
 
     if (typeof window !== 'undefined') {
       localStorage.removeItem('currentUser');

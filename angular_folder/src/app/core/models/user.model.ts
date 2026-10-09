@@ -4,11 +4,21 @@
 //id will stay string since the form inputs in a url value are alr strings
 // it avoids conversions/bugs.
 
+export type Gender = 'MALE' | 'FEMALE' | 'NON_BINARY';
+
 export interface User {
     id: string;     //this will be auto-gen !!
     firstName: string;
     lastName: string;
     email: string;
+    gender?: Gender;
+}
+
+export interface UpdateProfileRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
+  gender?: Gender;
 }
 
 export interface LoginRequest {

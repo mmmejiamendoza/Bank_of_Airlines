@@ -36,9 +36,14 @@ export const routes: Routes = [
       },
       {
         path: 'help',
-        loadComponent: () => import('./features/help/help/help').then((m) => m.Help),
+        loadComponent: () => 
+          import('./features/help/help/help').then((m) => m.Help),
       },
-      // later: profile goes here
+      {
+        path: 'profile',
+        loadComponent: () => 
+          import('./features/profile/profile/profile').then((m) => m.Profile),
+      },
     ],
   },
 
